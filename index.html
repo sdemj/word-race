@@ -242,7 +242,12 @@ border: 8px solid #fbbf24;
         #htpBtn img {
             transition: transform 0.3s ease;
         }
-
+/* 추가할 CSS 코드 */
+#timerDisp {
+    min-width: 280px;             /* 박스의 최소 너비를 고정하여 진동 방지 */
+    justify-content: center;      /* 내부 텍스트를 중앙으로 정렬 */
+    font-variant-numeric: tabular-nums; /* 숫자의 폭을 일정하게 고정 */
+}
 #htpBtn {
     background: #fbbf24; /* 메인 테마 노란색 */
     color: #ffffff;
