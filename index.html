@@ -22,6 +22,7 @@ html, body {
     display: flex; 
     justify-content: center; 
     align-items: center; 
+touch-action: manipulation;
 }
 
 body {
@@ -740,52 +741,67 @@ function closeHTP() {
 window.addEventListener('keydown', e => {
     if(e.code !== 'Space') return;
     if(document.activeElement && document.activeElement.tagName === 'INPUT') return;
-    
-    // 게임 페이지나 설정 페이지가 아니면 무시 (htpModal 등 확인)
     if(page !== 'pg-setup' && page !== 'pg-game') return;
-
     if(!htpModal.classList.contains('active')) e.preventDefault();
-    else return;
 
-    if(page === 'pg-setup') { 
-        startGame(); 
-        return;
-    }
-    
+    if(page === 'pg-setup') { startGame(); return; }
+
     if(page === 'pg-game') { 
         if(resModal.classList.contains('active') || repModal.classList.contains('active')) return;
-        
-        if(revIdx < cellCount - 1) {
-            revIdx++; 
-            const ov = document.getElementById('ov-' + revIdx);
-            if(ov) ov.classList.add('revealed');
-            
-            // 마지막 셀을 공개했을 때
-            if(revIdx === cellCount - 1 && timerOn) {
-                playSuccess(); // 성공 효과음 재생
-                const end = Date.now();
-                let off = pausedMs; 
-                if(pauseAt) off += end - pauseAt;
-                timerOn = false; 
-                showResult((end - startTime - off) / 1000);
-            }
-        }
+        // 위에서 만든 함수를 호출만 하면 됩니다!
+        revealNextCell(); 
     }
 });
+function revealNextCell() {
+    if(revIdx < cellCount - 1) {
+        revIdx++; 
+        const ov = document.getElementById('ov-' + revIdx);
+        if(ov) ov.classList.add('revealed');
+        
+        if(revIdx === cellCount - 1 && timerOn) {
+            playSuccess();
+            const end = Date.now();
+            let off = pausedMs; 
+            if(pauseAt) off += end - pauseAt;
+            timerOn = false; 
+            showResult((end - startTime - off) / 1000);
+        }
+    }
+}
 function resizeGame() {
     const container = document.querySelector('.game-container');
     const winW = window.innerWidth;
     const winH = window.innerHeight;
     
-    // 여유 공간 5% 확보
-    const scale = Math.min((winW / 1200) * 0.95, (winH / 800) * 0.95);
+    const designW = 1200;
+    const designH = 800;
     
-    // translate(-50%, -50%)를 함께 적용하여 중앙 유지
+    // 모바일(세로가 긴 경우)과 PC(가로가 긴 경우)에 따라 스케일 다르게 적용
+    const isPortrait = winH > winW;
+    let scale;
+    
+    if (isPortrait) {
+        // 모바일 세로 모드: 가로 폭에 맞춤 (전체 너비 95% 사용)
+        scale = (winW / designW) * 0.95;
+    } else {
+        // PC 가로 모드: 가로/세로 중 작은 쪽에 맞춤
+        scale = Math.min(winW / designW, winH / designH) * 0.95;
+    }
+    
     container.style.transform = `translate(-50%, -50%) scale(${scale})`;
 }
-
 // 초기 실행 및 창 크기 변경 시 호출
 window.addEventListener('resize', resizeGame);
+document.getElementById('colorGrid').addEventListener('click', function(e) {
+    // 게임 페이지일 때만 동작
+    if (page !== 'pg-game') return;
+    
+    // resModal이나 repModal이 열려있으면 클릭 무시
+    if (resModal.classList.contains('active') || repModal.classList.contains('active')) return;
+    
+    // 다음 셀 열기 로직 호출
+    revealNextCell();
+});
 resizeGame();
 
 renderGroups();
