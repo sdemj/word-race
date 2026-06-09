@@ -767,11 +767,20 @@ function exitGame(){
 function resetGame(){repModal.classList.remove('active');initGrid(true);}
 
 function openHTP() {
+    if (page === 'pg-game' && timerOn) {
+        pauseAt = Date.now();
+        timerOn = false; 
+    }
     document.getElementById('htpModal').classList.add('active');
 }
 
 function closeHTP() {
     document.getElementById('htpModal').classList.remove('active');
+    if (page === 'pg-game' && pauseAt) {
+        pausedMs += Date.now() - pauseAt;
+        pauseAt = null;
+        timerOn = true;
+    }
 }
 window.addEventListener('keydown', e => {
     if(e.code !== 'Space') return;
