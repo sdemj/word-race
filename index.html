@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WORD RACE</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Fredoka:wght@500;600;700&family=Baloo+2:wght@500;600;700;800&display=swap" rel="stylesheet">
     <style>
         * {
             box-sizing: border-box;
@@ -13,6 +13,10 @@
         :root {
             --bg-color: #f8fafc;
             --text-color: #1e293b;
+            --f-cute: 'Fredoka','Baloo 2','Segoe UI Rounded',system-ui,'Malgun Gothic',sans-serif;
+            --t-red:#F0604F; --t-yellow:#E6A62A; --t-green:#63B646;
+            --t-blue:#3592DE; --t-purple:#9068D2; --t-pink:#E56AA6;
+            --r-pill: 999px; --r-xl: 28px; --r-lg: 20px;
         }
         html, body { 
             margin: 0; 
@@ -33,7 +37,7 @@
         }
         .game-container {
             width: 1200px; 
-            height: 800px;
+            height: 900px;
             position: absolute;
             top: 50%;
             left: 50%;
@@ -66,12 +70,14 @@
 
         /* 대분류/소분류 통합 선택 버튼 스타일 */
         .selection-heading {
-            font-size: 2.8rem;
-            font-weight: 900;
-            color: #1e293b;
+            font-family: var(--f-cute);
+            font-size: 2.6rem;
+            font-weight: 700;
+            color: #1e5fc0;
             margin-bottom: 25px;
-            text-shadow: 1px 1px 2px rgba(255,255,255,0.8);
+            text-shadow: 0 2px 0 rgba(255,255,255,0.9);
             text-align: center;
+            letter-spacing: -0.5px;
         }
         .grid-menu {
             display: grid;
@@ -82,20 +88,21 @@
             margin-bottom: 20px;
         }
 .menu-box-btn {
-            background: linear-gradient(180deg, #fefeff 0%, #eef8ff 100%);
-            border: 4px solid #9ed8ff;
-            border-radius: 20px;
+            font-family: var(--f-cute);
+            background: linear-gradient(180deg, #ffffff 0%, #eaf6ff 100%);
+            border: 4px solid #bfe6ff;
+            border-radius: 32px;
             padding: 15px 10px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             font-size: 1.2rem;
-            font-weight: 900;
-            color: #4a5568;
-            box-shadow: 0 6px 0 #b8e4ff, 0 10px 15px rgba(0,0,0,0.05);
+            font-weight: 700;
+            color: #3d5a80;
+            box-shadow: 0 6px 0 #b8e4ff, 0 10px 15px rgba(31,58,110,0.08);
             cursor: pointer;
-            transition: all 0.15s ease;
+            transition: all 0.15s cubic-bezier(.34,1.56,.64,1);
             box-sizing: border-box;
 
             /* ──────── [크기 및 정사각형 조절 핵심 부분] ──────── */
@@ -105,20 +112,20 @@
             /* ────────────────────────────────────────────────── */
         }
         .menu-box-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 0 #b8e4ff, 0 12px 18px rgba(0,0,0,0.08);
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 9px 0 #b8e4ff, 0 14px 18px rgba(31,58,110,0.1);
         }
         .menu-box-btn.active {
-            background: linear-gradient(180deg, #fff3f5 0%, #ffcbd1 100%) !important;
+            background: linear-gradient(180deg, #fff0f5 0%, #ffc2d1 100%) !important;
             border-color: #ff6b9d !important;
             box-shadow: 0 4px 0 #e05285 !important;
             color: #d81b60 !important;
-            transform: translateY(2px);
+            transform: translateY(2px) scale(1.02);
         }
         .menu-box-btn span {
             font-size: 0.9rem;
-            color: #718096;
-            font-weight: normal;
+            color: #7a8ba8;
+            font-weight: 500;
             margin-top: 4px;
         }
         .menu-box-btn.active span {
@@ -129,33 +136,45 @@
             max-width: 640px; 
             height: 70px;
             padding: 10px 20px;
+            border-radius: var(--r-pill);
             flex-direction: row;
             gap: 10px;
             margin: 0 auto 15px auto; 
         }
         .status-counter {
-            font-size: 1.5rem;
-            font-weight: 900;
-            color: #ff6b00;
+            font-family: var(--f-cute);
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #e05285;
             margin-bottom: 15px;
-            background: rgba(255, 255, 255, 0.8);
-            padding: 5px 20px;
-            border-radius: 50px;
-            border: 2px solid #ffcbd1;
+            background: rgba(255, 255, 255, 0.85);
+            padding: 6px 22px;
+            border-radius: var(--r-pill);
+            border: 3px solid #ffcbd1;
+            box-shadow: 0 3px 8px rgba(31,58,110,0.08);
+            align-self: center;
+            width: fit-content;
         }
         .start-btn {
-            padding: 12px 50px;
-            background: #fbbf24;
+            font-family: var(--f-cute);
+            padding: 14px 55px;
+            background: var(--t-green, #63B646);
             color: white;
-            font-weight: 900;
+            font-weight: 700;
             font-size: 1.6rem;
-            border-radius: 50px;
-            box-shadow: 0 6px 0 #d97706;
+            border-radius: var(--r-pill);
+            box-shadow: 0 6px 0 #5F9E2B, 0 10px 18px rgba(95,158,43,0.3);
             transition: all 0.1s;
+            align-self: center;
+            width: fit-content;
         }
         .start-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 0 #d97706;
+            box-shadow: 0 8px 0 #5F9E2B, 0 12px 20px rgba(95,158,43,0.35);
+        }
+        .start-btn:active {
+            transform: translateY(3px);
+            box-shadow: 0 3px 0 #5F9E2B;
         }
 
         /* 기존 게임 스타일 */
@@ -241,9 +260,12 @@
         .mbtn-next { background: #ff6b00; color: #fff; }
         .mbtn-retry { background: #ef4444; color: #fff; }
         
-        .group-card { border-radius:25px; padding:25px; display:flex; flex-direction:column; align-items:center; background:rgba(255,255,255,0.1); border:3px solid rgba(255,255,255,0.2); }
-        .group-input { width:100%; text-align:center; padding:10px; border-radius:50px; font-weight:800; background:#fff; color:#334155; border:3px solid #cbd5e1; }
-        .btn-cnt { width:50px; height:50px; border-radius:12px; font-size:2.0rem; background:#1e293b; color:#fff; border:2px solid #334155; cursor:pointer; }
+        .group-card { border-radius:32px; padding:22px 18px; display:flex; flex-direction:column; align-items:center; background:rgba(255,255,255,0.15); border:4px solid rgba(255,255,255,0.35); box-shadow: 0 8px 18px rgba(31,58,110,0.12); transition: transform 0.15s ease; }
+        .group-card:hover { transform: translateY(-2px); }
+        .group-input { width:100%; text-align:center; padding:10px; border-radius:var(--r-pill); font-family: var(--f-cute); font-weight:600; background:#fff; color:#334155; border:3px solid rgba(255,255,255,0.6); box-shadow: inset 0 2px 4px rgba(0,0,0,0.06); }
+        .btn-cnt { width:50px; height:50px; border-radius:50%; font-family: var(--f-cute); font-size:1.7rem; font-weight:600; background:#3592DE; color:#fff; border:3px solid #fff; box-shadow: 0 4px 0 #1E5FC0; cursor:pointer; transition: all 0.1s ease; }
+        .btn-cnt:hover { transform: translateY(-2px); }
+        .btn-cnt:active { transform: translateY(2px); box-shadow: 0 1px 0 #1E5FC0; }
         .round-disp {
             font-family:'Orbitron',sans-serif; color:#fff; font-size:2.8rem; font-weight:900;
             text-shadow: 2px 2px 0 #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000;
@@ -272,6 +294,190 @@
         
         #pg-setup, #pg-category, #pg-subcategory { justify-content: center; }
 
+        #pg-game .game-shell {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            border-radius: 26px;
+            padding: 14px 16px 16px;
+            position: relative;
+            overflow: hidden;
+            background: rgba(255,255,255,.28);
+            border: 1px solid rgba(255,255,255,.6);
+            box-shadow: 0 20px 50px rgba(23,63,110,.25);
+            backdrop-filter: blur(6px);
+        }
+        #pg-game .g-topbar { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; flex: none; }
+        #pg-game .g-logo { font-family: var(--f-cute); font-weight: 700; font-size: 1.15rem; letter-spacing: .02em; color: #fff; text-shadow: 0 2px 0 #1e5fc0; white-space: nowrap; }
+        #pg-game .g-logo .y { color: var(--t-yellow); }
+        #pg-game .track { flex: 1; height: 42px; background: #767483; border-radius: 999px; position: relative; display: flex; align-items: center; padding: 0 16px; box-shadow: inset 0 2px 6px rgba(0,0,0,.25); overflow: hidden; }
+        #pg-game .track::before { content: ''; position: absolute; top: 50%; left: 0; right: 0; height: 4px; transform: translateY(-50%); background: repeating-linear-gradient(90deg, #fff 0 12px, transparent 12px 24px); opacity: .5; }
+        #pg-game .cp { width: 28px; height: 28px; border-radius: 50%; background: rgba(255,255,255,.35); color: #fff; display: grid; place-items: center; font-weight: 800; font-size: 13px; position: relative; z-index: 2; flex: none; border: 2px solid rgba(0,0,0,.12); }
+        #pg-game .cp.done { background: var(--t-green); color: #fff; }
+        #pg-game .cp.now { background: var(--t-yellow); color: #5a3a00; transform: scale(1.18); box-shadow: 0 0 0 4px rgba(251,194,60,.45); }
+        #pg-game .cp-sp { flex: 1; }
+        #pg-game .flag-fin { width: 26px; height: 26px; flex: none; z-index: 2; }
+        #pg-game .g-actions { display: flex; gap: 8px; align-items: center; }
+        #pg-game .g-htp { background: var(--t-blue); color: #fff; font-family: var(--f-cute); font-weight: 700; font-size: .95rem; padding: 10px 18px; border: 0; border-radius: 999px; cursor: pointer; box-shadow: 0 4px 0 #1e5fc0; white-space: nowrap; }
+        #pg-game .g-htp:hover { transform: translateY(-2px); box-shadow: 0 6px 0 #1e5fc0; }
+        #pg-game .g-ico { width: 40px; height: 40px; border-radius: 50%; border: 2px solid #fff; background: #1e2a44; color: #fff; cursor: pointer; font-size: 16px; box-shadow: 0 4px 0 rgba(0,0,0,.25); }
+        #pg-game .g-status { display: flex; gap: 12px; align-items: stretch; flex-wrap: wrap; margin-bottom: 10px; flex: none; }
+        #pg-game .g-timer { flex: 1; min-width: 220px; background: linear-gradient(180deg, #ffd24a, #f6a500); border: 3px solid #dd8a00; border-radius: 20px; padding: 12px 18px; display: flex; align-items: center; gap: 14px; position: relative; box-shadow: 0 6px 0 #c67a00, 0 12px 22px rgba(221,138,0,.3); }
+        #pg-game .g-timer .stop { width: 34px; height: 34px; flex: none; }
+        #pg-game .g-timer .lab { font-weight: 800; color: #7a4e00; font-size: .8rem; }
+        #pg-game .g-timer .big { font-family: 'Orbitron', sans-serif; font-size: clamp(34px, 5vw, 48px); color: #5a3a00; line-height: .9; font-variant-numeric: tabular-nums; }
+        #pg-game .g-rec { flex: 1; min-width: 260px; background: #fff; border: 2px solid #cfe0f0; border-radius: 20px; padding: 12px 16px; display: flex; align-items: center; gap: 12px; box-shadow: 0 4px 12px rgba(31,58,110,.1); }
+        #pg-game .g-rec .badge { width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(180deg, #3b9ae8, #2c7be0); display: grid; place-items: center; font-size: 22px; flex: none; box-shadow: 0 3px 0 rgba(30,95,192,.35); }
+        #pg-game .g-rec .k { font-weight: 800; color: #5c6577; font-size: .84rem; }
+        #pg-game .g-rec .v { font-weight: 800; color: #1e5fc0; font-size: 1.6rem; font-variant-numeric: tabular-nums; font-family: 'Orbitron', sans-serif; line-height: 1.05; }
+        #pg-game .g-rec .hint { margin-left: auto; background: #eaf3fc; color: #2565b8; font-weight: 800; font-size: .92rem; line-height: 1; padding: 10px 12px; border-radius: 12px; text-align: center; flex: none; white-space: nowrap; }
+        #pg-game .g-roster { display: flex; gap: 8px; flex-wrap: wrap; background: rgba(255,255,255,.55); padding: 9px; border-radius: 999px; margin-bottom: 6px; justify-content: center; flex: none; }
+        #pg-game .chip { display: inline-flex; align-items: center; gap: 8px; padding: 8px 12px; border-radius: 999px; background: var(--chip-bg, #1e5fc0); color: #fff; font-weight: 800; font-size: .9rem; box-shadow: 0 3px 0 rgba(0,0,0,.1); }
+        #pg-game .chip .car { width: 18px; height: 18px; flex: none; }
+        #pg-game .board { flex: 1; min-height: 0; background: rgba(255,255,255,.55); border-radius: 22px; padding: 8px; box-shadow: inset 0 2px 10px rgba(30,95,192,.12); display: flex; }
+        #pg-game .cells { width: 100%; height: 100%; display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+        #pg-game .grid-table { width: 100%; height: 100%; max-width: 100%; aspect-ratio: auto; }
+        #pg-game .coach {display: none !important; }
+        #pg-game .cell {
+            position: relative;
+            display: FLEX;
+            place-items: center;
+            background: linear-gradient(180deg, #333a4e 0%, #272d3e 100%);
+            border: 2px solid #1c2233;
+            border-radius: 16px;
+            font-family: var(--f-cute);
+            font-weight: 700;
+            font-size: clamp(28px, 4.4vw, 52px);
+            color: #f8fafc;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.24), inset 0 1px 0 rgba(255,255,255,0.08);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            overflow: hidden;
+            padding: 6px;
+            text-align: center;
+            min-height: 100px;
+        }
+        #pg-game .coach .msg { font-weight: 800; color: #173f7c; font-size: .95rem; }
+        #pg-game .keycap { font-weight: 800; font-size: .8rem; color: #fff; background: #1e2a44; border: 1px solid #0d1526; border-bottom: 3px solid #090f1c; border-radius: 8px; padding: 6px 12px; white-space: nowrap; }
+        #pg-game .coach .prog { margin-left: auto; background: var(--t-blue); color: #fff; font-weight: 800; font-size: .82rem; padding: 6px 12px; border-radius: 999px; font-variant-numeric: tabular-nums; }
+        #pg-game .cell.revealed {
+            background: var(--cell-color, #1e5fc0);
+            border-color: color-mix(in srgb, var(--cell-color, #1e5fc0) 70%, #000 30%);
+            box-shadow: 0 4px 0 color-mix(in srgb, var(--cell-color, #1e5fc0) 55%, #000 25%), 0 6px 16px rgba(0,0,0,0.18);
+        }
+        #pg-game .cell .word {
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.16);
+            opacity: 0;
+            transform: scale(0.96);
+            transition: opacity 0.2s ease, transform 0.2s ease;
+            display: block;
+            width: 100%;
+            text-align: center;
+            line-height: 1.2;
+            padding: 0 6px;
+        }
+        #pg-game .cell.revealed .word {
+            opacity: 1;
+            transform: scale(1);
+        }
+        #pg-game .cell .num {
+            position: absolute;
+            top: 8px;
+            left: 10px;
+            font-size: 11px;
+            font-weight: 800;
+            color: rgba(255,255,255,0.38);
+        }
+        #pg-game .overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(51,58,78,0.95) 0%, rgba(39,45,62,0.98) 100%);
+            border-radius: 14px;
+            z-index: 5;
+            opacity: 1;
+            transition: opacity 0.35s ease, transform 0.35s ease;
+            display: grid;
+            place-items: center;
+            font-family: var(--f-cute);
+            font-weight: 700;
+            font-size: clamp(32px, 4.7vw, 56px);
+            color: rgba(255,255,255,0.16);
+        }
+        #pg-game .overlay.revealed {
+            opacity: 0;
+            pointer-events: none;
+            transform: scale(0.96);
+        }
+        #pg-game .action-btn {
+            position: absolute; bottom: 18px; right: 18px; background: #1e5fc0; color: #fff; width: 56px; height: 56px; border: none; border-radius: 16px; display: none; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 8px 18px rgba(30,95,192,0.25);
+        }
+        #pg-game .action-btn.visible { display: flex; }
+        #pg-game .start-ov {
+            position: absolute;
+            inset: 0;
+            z-index: 20;
+            display: grid;
+            place-items: center;
+            background: rgba(18,26,46,.5);
+            backdrop-filter: blur(2px);
+            border-radius: 26px;
+        }
+        #pg-game .start-card {
+            background: #fff;
+            border-radius: 22px;
+            padding: 26px 44px 30px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,.35);
+            border: 4px solid #1e5fc0;
+        }
+        #pg-game .start-card.is-counting {
+            display: none;
+        }
+        #pg-game .start-round {
+            font-family: var(--f-cute);
+            font-size: 26px;
+            color: #173f7c;
+            letter-spacing: .04em;
+            margin-bottom: 18px;
+        }
+        #pg-game .start-btn {
+            font-family: var(--f-cute);
+            font-weight: 700;
+            font-size: 24px;
+            color: #fff;
+            background: #63B646;
+            border: 0;
+            border-radius: 999px;
+            padding: 16px 36px;
+            cursor: pointer;
+            box-shadow: 0 6px 0 #5F9E2B, 0 10px 18px rgba(95,158,43,.35);
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+        }
+        #pg-game .start-btn .kc {
+            font-family: var(--f-cute);
+            font-weight: 800;
+            font-size: 13px;
+            background: rgba(0,0,0,.18);
+            border-radius: 6px;
+            padding: 4px 10px;
+        }
+        #pg-game .count {
+            position: absolute;
+            inset: 0;
+            display: none;
+            place-items: center;
+            font-family: var(--f-cute);
+            font-size: clamp(90px, 24cqw, 170px);
+            color: #fff;
+            text-shadow: 0 6px 0 rgba(0,0,0,.28), 0 12px 26px rgba(0,0,0,.35);
+        }
+        #pg-game .count.show { display: grid; }
+        #pg-game .count .n { display: block; animation: pop 0.8s ease both; }
+
         .htable { width: 100%; border-collapse: separate; border-spacing: 0 10px; font-size: 1.2rem; }
         .htable td { padding: 15px; background: #f1f5f9; font-weight: 800; color: #334155; }
         .htable td:first-child { border-radius: 12px 0 0 12px; }
@@ -298,18 +504,18 @@
 
     <div id="pg-setup" class="page" style="padding-top: 20px; padding-bottom: 20px;">
         <div class="text-center mt-2 mb-4">
-            <h2 class="text-5xl font-black mb-3" style="color: #1e293b; text-shadow: 1px 1px 2px rgba(255,255,255,0.5);">팀 설정하기</h2>
+            <h2 class="text-5xl mb-3" style="font-family: var(--f-cute); font-weight:700; color: #1e5fc0; text-shadow: 0 2px 0 rgba(255,255,255,0.9);">팀 설정하기</h2>
             <p class="text-gray-500 text-2xl font-medium">아래에서 팀 수, 팀 색깔, 팀 이름을 정해 주세요.</p>
         </div>
         <div class="w-full flex flex-col items-center gap-3"> 
-            <div class="flex items-center gap-6 bg-white border-2 border-gray-200 p-3 px-8 rounded-2xl shadow-sm"> 
-                <span class="text-gray-700 font-bold text-xl">참가 팀 수</span>
-                <button class="btn-cnt" onclick="chgCount(-1)" style="background:#64748b">-</button>
-                <span id="countDisp" class="text-[#fbbf24] font-black text-4xl w-16 text-center">6</span>
-                <button class="btn-cnt" onclick="chgCount(1)" style="background:#64748b">+</button>
+            <div class="flex items-center gap-6 bg-white p-3 px-8" style="border-radius: var(--r-pill); border: 3px solid #d9e5f1; box-shadow: 0 4px 12px rgba(31,58,110,0.1);"> 
+                <span style="font-family: var(--f-cute); font-weight:600; color:#3d5a80;" class="text-xl">참가 팀 수</span>
+                <button class="btn-cnt" onclick="chgCount(-1)">-</button>
+                <span id="countDisp" style="font-family: var(--f-cute); color:#fbbf24;" class="font-black text-4xl w-16 text-center">6</span>
+                <button class="btn-cnt" onclick="chgCount(1)">+</button>
             </div>
             <div id="groupGrid" class="grid grid-cols-3 gap-3 w-full max-w-[800px]"></div>
-            <button onclick="goToCategoryAfterSetup()" class="mt-2 px-12 py-4 bg-[#fbbf24] text-white font-black text-2xl rounded-2xl shadow-lg hover:scale-105 transition-all">
+            <button onclick="goToCategoryAfterSetup()" class="mt-2 px-12 py-4 text-white text-2xl hover:scale-105 transition-all" style="font-family: var(--f-cute); font-weight:700; background: var(--t-blue); border-radius: var(--r-pill); box-shadow: 0 6px 0 #1E5FC0, 0 10px 18px rgba(31,58,110,0.2);">
                 주제 선택하러 가기
             </button>
         </div>
@@ -329,28 +535,67 @@
     </div>
 
 <div id="pg-game" class="page" style="justify-content: flex-start;">
-    <div class="w-full flex flex-col gap-1 items-center">
-            <div class="flex flex-col items-center gap-1 mt-4">
-                <div id="roundDisp" class="round-disp text-white text-5xl font-black italic tracking-tighter">ROUND 1 / 5</div>
-                <div class="w-full flex justify-between items-center px-6 mb-2">
-                    <div id="recDisp" class="bg-[#1e293b]/50 backdrop-blur-md border border-white/10 px-3 py-2 rounded-xl shadow-[0_4px_12px_rgba(0,0,0,0.3)]">
-                        <span class="text-[#feff00] font-black text-lg tracking-tight">이전 라운드 기록: 없음</span>
-                    </div>
-                    <div id="timerDisp" class="flex items-center gap-3 bg-[#FEF08A] border-4 border-[#FBBF24] px-4 py-2 rounded-full shadow-[0_6px_0_#D97706] animate-pulse">
-                        <span class="text-[#92400E] font-black text-2xl tracking-wide">진행 시간: 00.00초</span>
-                    </div>
-                </div>          
-                <div id="dashboard" class="flex flex-wrap gap-3 justify-center bg-black/40 border border-white/10 p-2 rounded-2xl w-full max-w-[900px] mt-1 mb-1"></div>
-                <div class="relative w-full flex justify-center">
-                    <div id="colorGrid" class="grid-table"></div>
-                    <button id="nextBtn" class="action-btn" onclick="handleNext()">➤</button>
-                </div>
-                <p class="blink text-gray-400 font-bold bg-black/60 px-6 py-2 rounded-full border border-white/10 mt-2">
-                    스페이스바를 눌러 셀을 하나씩 공개하세요
-                </p>
+    <div class="game-shell">
+        <div class="g-topbar">
+            <span class="g-logo">WORD<span class="y">RACE</span></span>
+            <div class="track">
+                <div class="cp now">1</div>
+                <div class="cp-sp"></div>
+                <div class="cp">2</div>
+                <div class="cp-sp"></div>
+                <div class="cp">3</div>
+                <div class="cp-sp"></div>
+                <div class="cp">4</div>
+                <div class="cp-sp"></div>
+                <div class="cp">5</div>
+                <svg class="flag-fin" viewBox="0 0 24 24"><path d="M5 22V3" stroke="#fff" stroke-width="2" stroke-linecap="round"/><rect x="7" y="3" width="14" height="10" fill="#fff"/></svg>
+            </div>
+            <div class="g-actions">
+                <button class="g-htp" onclick="openHTP()">How to Play</button>
             </div>
         </div>
+
+        <div class="g-status">
+            <div id="timerDisp" class="g-timer">
+                <svg class="stop" viewBox="0 0 24 24" fill="none" stroke="#5a3a00" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="13" r="8"/><path d="M12 13V9M9 2h6M18.5 6.5l1.5-1.5"/></svg>
+                <div>
+                    <div id="roundLabel" class="lab">진행 시간 · ROUND 1 / 5</div>
+                    <div class="big">00.00</div>
+                </div>
+            </div>
+            <div id="recDisp" class="g-rec">
+                <div class="badge">🏆</div>
+                <div>
+                    <div class="k">이전 라운드 기록</div>
+                    <div class="v">없음</div>
+                </div>
+                <div class="hint">이 기록보다 빨라야 통과!</div>
+            </div>
+        </div>
+
+        <div id="dashboard" class="g-roster"></div>
+
+        <div class="board">
+            <div id="colorGrid" class="cells grid-table"></div>
+        </div>
+
+        <div id="startOverlay" class="start-ov">
+            <div class="start-card">
+                <div id="startRoundLabel" class="start-round">ROUND 1 / 5</div>
+                <button id="startBtn" class="start-btn" type="button">스페이스를 눌러 시작 <span class="kc">Space</span></button>
+            </div>
+            <div id="count" class="count"></div>
+        </div>
+
+        <div class="coach">
+            <span class="keycap">SPACE</span>
+            <span class="msg">스페이스바를 눌러 셀을 하나씩 공개하세요</span>
+            <span class="prog" id="roundDisp">ROUND 1 / 5</span>
+        </div>
+
+        <button id="nextBtn" class="action-btn" onclick="handleNext()">➤</button>
     </div>
+</div>
 
     <div id="resModal" class="modal-wrap">
       <div id="resBox" class="modal-box">
@@ -379,10 +624,6 @@
         </div>
       </div>
     </div>
-
-    <button id="htpBtn" onclick="openHTP()" style="position:fixed; top:14px; right:14px; z-index:100; display:none; padding: 10px 20px; background: #334155; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
-        How to Play
-    </button>
 
     <div id="htpModal" class="modal-wrap">
       <div class="modal-box" style="max-width: 600px; text-align: left; padding: 40px; position: relative;">
@@ -423,12 +664,12 @@ const CATEGORY_DATA = {
 };
 
 const masterColors = [
-  {id:'red',    name:'빨강', hex:'#ff4d4d', text:'#ffffff', def:'팀 이름'},
-  {id:'blue',   name:'파랑', hex:'#3b82f6', text:'#ffffff', def:'팀 이름'},
-  {id:'yellow', name:'노랑', hex:'#fbbf24', text:'#ffffff', def:'팀 이름'},
-  {id:'green',  name:'연두', hex:'#22c55e', text:'#ffffff', def:'팀 이름'},
-  {id:'pink',   name:'분홍', hex:'#ec4899', text:'#ffffff', def:'팀 이름'},
-  {id:'black',  name:'보라', hex:'#a855f7', text:'#ffffff', def:'팀 이름'},
+  {id:'red',    name:'1팀', hex:'#F0604F', text:'#ffffff', def:'팀 이름'},
+  {id:'blue',   name:'2팀', hex:'#3592DE', text:'#ffffff', def:'팀 이름'},
+  {id:'yellow', name:'3팀', hex:'#E6A62A', text:'#ffffff', def:'팀 이름'},
+  {id:'green',  name:'4팀', hex:'#63B646', text:'#ffffff', def:'팀 이름'},
+  {id:'pink',   name:'5팀', hex:'#E56AA6', text:'#ffffff', def:'팀 이름'},
+  {id:'black',  name:'6팀', hex:'#9068D2', text:'#ffffff', def:'팀 이름'},
 ];
 
 let words = []; 
@@ -436,11 +677,18 @@ const cellCount = 16;
 let page = 'welcome', groupCount = 6, groupNames = {}, roundNum = 1, revIdx = -1, lastRec = null, history = [], startTime = null, timerOn = false, success = false, pausedMs = 0, pauseAt = null;
 let selectedCategoryName = "";
 let selectedSubcategories = new Set();
+let gameStarted = false;
+let countdownActive = false;
+let startOverlay = null;
+let startBtn = null;
+let countEl = null;
+let startRoundLabel = null;
 
 masterColors.forEach(c => groupNames[c.id] = c.def);
 
 const grid = document.getElementById('colorGrid');
 const roundDisp = document.getElementById('roundDisp');
+const roundLabel = document.getElementById('roundLabel');
 const recDisp = document.getElementById('recDisp');
 const nextBtn = document.getElementById('nextBtn');
 const resModal = document.getElementById('resModal');
@@ -454,6 +702,10 @@ const dashboard = document.getElementById('dashboard');
 const htpModal = document.getElementById('htpModal');
 const groupGrid = document.getElementById('groupGrid');
 const countDisp = document.getElementById('countDisp');
+startOverlay = document.getElementById('startOverlay');
+startBtn = document.getElementById('startBtn');
+countEl = document.getElementById('count');
+startRoundLabel = document.getElementById('startRoundLabel');
 
 function showPage(pageId) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -462,9 +714,14 @@ function showPage(pageId) {
     
     const container = document.querySelector('.game-container');
     if (pageId === 'pg-welcome') {
-        container.style.backgroundImage = "url('0.png')"; 
+        container.style.backgroundImage = "url('0.png')";
+        container.style.background = 'none';
+    } else if (pageId === 'pg-game') {
+        container.style.backgroundImage = 'none';
+        container.style.background = 'linear-gradient(180deg, #77C6F2, #9AD8FA 40%, #C9EAFC)';
     } else {
-        container.style.backgroundImage = "none";            
+        container.style.backgroundImage = 'none';
+        container.style.background = '#f0f9ff';
     }
     
     const htpBtn = document.getElementById('htpBtn');
@@ -628,17 +885,75 @@ function launchGameAfterSelection() {
     showPage('pg-game'); 
     roundNum = 1;
     roundDisp.textContent = `ROUND 1 / 5`;
+    if (roundLabel) roundLabel.textContent = `진행 시간 · ROUND ${roundNum} / 5`;
     updateDashboard(); 
+    updateTrackMarkers();
     initGrid(true); 
 }
 
 function updateTimer() {
     if (timerOn && startTime) {
         const elapsed = (Date.now() - startTime - pausedMs) / 1000;
-        document.querySelector('#timerDisp span').textContent = `진행 시간: ${elapsed.toFixed(2)}초`;
+        const timerBig = document.querySelector('#timerDisp .big');
+        if (timerBig) timerBig.textContent = `${elapsed.toFixed(2)}`;
     }
 }
 setInterval(updateTimer, 50);
+
+function showStartOverlay() {
+    if (startOverlay) startOverlay.style.display = 'grid';
+    if (startRoundLabel) startRoundLabel.textContent = `ROUND ${roundNum} / 5`;
+    if (startBtn) startBtn.style.display = 'inline-flex';
+    const startCard = document.querySelector('#startOverlay .start-card');
+    if (startCard) startCard.classList.remove('is-counting');
+    if (countEl) {
+        countEl.className = 'count';
+        countEl.innerHTML = '';
+    }
+}
+
+function hideStartOverlay() {
+    if (startOverlay) startOverlay.style.display = 'none';
+}
+
+function beginRound() {
+    gameStarted = true;
+    countdownActive = false;
+    timerOn = true;
+    pausedMs = 0;
+    pauseAt = null;
+    startTime = Date.now();
+    const startCard = document.querySelector('#startOverlay .start-card');
+    if (startCard) startCard.classList.remove('is-counting');
+    hideStartOverlay();
+}
+
+function startCountdown() {
+    if (gameStarted || countdownActive) return;
+    countdownActive = true;
+    const startCard = document.querySelector('#startOverlay .start-card');
+    if (startCard) startCard.classList.add('is-counting');
+    if (startBtn) startBtn.style.display = 'none';
+    if (countEl) {
+        countEl.className = 'count show';
+        const seq = ['3', '2', '1', 'GO!'];
+        let i = 0;
+        const step = () => {
+            if (!countEl) return;
+            countEl.innerHTML = `<span class="n">${seq[i]}</span>`;
+            playCountdownSound(seq[i]);
+            i += 1;
+            if (i < seq.length) {
+                setTimeout(step, 800);
+            } else {
+                setTimeout(beginRound, 500);
+            }
+        };
+        step();
+    } else {
+        beginRound();
+    }
+}
 
 function playWelcomeSound(){
   try {
@@ -652,6 +967,37 @@ function playWelcomeSound(){
       g.gain.setValueAtTime(.18,now+t); g.gain.exponentialRampToValueAtTime(.01,now+t+durs[i]);
       o.connect(g); g.connect(c.destination); o.start(now+t); o.stop(now+t+durs[i]); t+=durs[i]-.02
     });
+  } catch(e){}
+}
+
+function playCountdownSound(label){
+  try {
+    const A = window.AudioContext || window.webkitAudioContext; if(!A) return;
+    if (!window._countAudioCtx) window._countAudioCtx = new A();
+    const c = window._countAudioCtx;
+    const now = c.currentTime;
+    const osc = c.createOscillator();
+    const gain = c.createGain();
+    osc.connect(gain);
+    gain.connect(c.destination);
+    gain.gain.setValueAtTime(0.0001, now);
+
+    if (label === 'GO!') {
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(920, now);
+      gain.gain.exponentialRampToValueAtTime(0.18, now + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.24);
+      osc.start(now);
+      osc.stop(now + 0.24);
+    } else {
+      osc.type = 'sine';
+      const pitch = 520 - (Number(label) - 1) * 40;
+      osc.frequency.setValueAtTime(pitch, now);
+      gain.gain.exponentialRampToValueAtTime(0.16, now + 0.04);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.18);
+      osc.start(now);
+      osc.stop(now + 0.18);
+    }
   } catch(e){}
 }
 
@@ -703,15 +1049,22 @@ function updateDashboard() {
     masterColors.slice(0, groupCount).forEach(c => {
         const nm = groupNames[c.id] || c.def;
         const b = document.createElement('div');
-        b.style.backgroundColor = c.hex;
-        b.style.color = c.text;
-        b.style.padding = "6px 16px";
-        b.style.borderRadius = "50px";
-        b.style.fontWeight = "900";
-        b.style.fontSize = "1.1rem";
-        b.style.border = "2px solid rgba(255,255,255,0.2)";
-        b.innerHTML = `<span>${nm}</span>`;
+        b.className = 'chip';
+        b.style.setProperty('--chip-bg', c.hex);
+        b.innerHTML = `<svg class="car" viewBox="0 0 24 24" fill="currentColor"><path d="M5 11l1.5-4A2 2 0 018.4 6h7.2a2 2 0 011.9 1.3L19 11h1a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 11-4 0H9a2 2 0 11-4 0H4a1 1 0 01-1-1v-3a1 1 0 011-1z"/></svg><span>${nm}</span>`;
         dashboard.appendChild(b);
+    });
+}
+
+function updateTrackMarkers() {
+    const markers = document.querySelectorAll('#pg-game .track .cp');
+    markers.forEach((marker, index) => {
+        marker.classList.remove('done', 'now');
+        if (index + 1 < roundNum) {
+            marker.classList.add('done');
+        } else if (index + 1 === roundNum) {
+            marker.classList.add('now');
+        }
     });
 }
 
@@ -751,20 +1104,27 @@ function initGrid(reset=false){
     grid.innerHTML=''; revIdx=-1; nextBtn.classList.remove('visible');
     resModal.classList.remove('active'); repModal.classList.remove('active'); resBox.classList.remove('fail');
     pausedMs=0; pauseAt=null;
-    
+    gameStarted = false;
+    countdownActive = false;
+    timerOn = false;
+    startTime = null;
     if(reset){
         roundNum=1; lastRec=null; history=[]; 
         roundDisp.textContent='ROUND 1 / 5';
-        document.querySelector('#recDisp span').textContent = '이전 라운드 기록: 없음';
+        if (roundLabel) roundLabel.textContent = `진행 시간 · ROUND ${roundNum} / 5`;
+        const recValue = document.querySelector('#recDisp .v');
+        if (recValue) recValue.textContent = '없음';
+        const timerBig = document.querySelector('#timerDisp .big');
+        if (timerBig) timerBig.textContent = '00.00';
     }
-    
-    startTime=Date.now(); timerOn=true;
+    updateTrackMarkers();
+    showStartOverlay();
     const cols=getColors(), wrds=getWords();
     for(let i=0; i<cellCount; i++){
         const cell=document.createElement('div'); cell.className='cell';
-        cell.style.backgroundColor=cols[i]; cell.textContent=wrds[i];
-        const ov=document.createElement('div'); ov.className='overlay'; ov.id='ov-'+i;
-        cell.appendChild(ov); grid.appendChild(cell);
+        cell.style.setProperty('--cell-color', cols[i]);
+        cell.innerHTML = `<span class="num">${String(i+1).padStart(2,'0')}</span><div class="overlay" id="ov-${i}">?</div><span class="word">${wrds[i]}</span>`;
+        grid.appendChild(cell);
     }
 }
 
@@ -815,9 +1175,12 @@ function handleNext(){
             return;
         }
         roundNum++;
-        roundDisp.textContent = `ROUND ${roundNum} / 5`; 
-        document.querySelector('#recDisp span').textContent = `이전 라운드 기록: ${fmt(lastRec)}`;
-        initGrid(); 
+        roundDisp.textContent = `ROUND ${roundNum} / 5`;
+        if (roundLabel) roundLabel.textContent = `진행 시간 · ROUND ${roundNum} / 5`;
+        updateTrackMarkers();
+        const recValue = document.querySelector('#recDisp .v');
+        if (recValue) recValue.textContent = fmt(lastRec);
+        initGrid();
     } else {
         initGrid(); 
     }
@@ -872,9 +1235,16 @@ window.addEventListener('keydown', e => {
     
     if(page === 'pg-game') { 
         if(resModal.classList.contains('active') || repModal.classList.contains('active')) return;
+        if (!gameStarted && !countdownActive) {
+            startCountdown();
+            return;
+        }
+        if (!gameStarted) return;
         if(revIdx < cellCount - 1) {
             revIdx++; 
+            const cell = grid.children[revIdx];
             const ov = document.getElementById('ov-' + revIdx);
+            if(cell) cell.classList.add('revealed');
             if(ov) ov.classList.add('revealed');
         } 
         else if(revIdx === cellCount - 1 && timerOn) {
@@ -888,11 +1258,17 @@ window.addEventListener('keydown', e => {
     }
 });
 
+if (startBtn) {
+    startBtn.addEventListener('click', () => {
+        if (page === 'pg-game') startCountdown();
+    });
+}
+
 function resizeGame() {
     const container = document.querySelector('.game-container');
     const winW = window.innerWidth;
     const winH = window.innerHeight;
-    const scale = Math.min((winW / 1200) * 0.95, (winH / 800) * 0.95);
+    const scale = Math.min((winW / 1200) * 0.95, (winH / 900) * 0.95);
     container.style.transform = `translate(-50%, -50%) scale(${scale})`;
 }
 window.addEventListener('resize', resizeGame);
