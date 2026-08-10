@@ -552,7 +552,7 @@
     <div id="pg-welcome" class="page active" style="justify-content: center;">
         <div style="flex-grow: 1;"></div>
         <div class="menu-buttons">
-            <button class="img-btn" onclick="openHTP()">
+            <button class="img-btn" onclick="openHTP('welcome')">
                 <img src="btn3.png" alt="HOW TO PLAY">
             </button>
             <button class="img-btn" onclick="goToSetupFirst()">
@@ -704,6 +704,9 @@
             <p style="margin: 5px 0 0 0;">- 팀원 모두 정확하게 단어를 읽어요.</p>
             <p style="margin: 0;">- 다른 팀 색깔의 단어를 읽지 마세요.</p>
           </div>
+        </div>
+        <div id="htp-gamestart-wrap" style="display:none; margin-top: 25px; text-align: center;">
+          <button class="start-btn" onclick="startFromHTP()" style="padding: 14px 45px; font-size: 1.3rem;">Game Start</button>
         </div>
       </div>
     </div>
@@ -1323,12 +1326,15 @@ function exitGame(){
 
 function resetGame(){ repModal.classList.remove('active'); initGrid(true); }
 
-function openHTP() {
+let htpSource = 'game';
+function openHTP(source) {
+    htpSource = source || 'game';
     if (page === 'pg-game' && timerOn) {
         pauseAt = Date.now();
-        timerOn = false; 
+        timerOn = false;
     }
     document.getElementById('htpModal').classList.add('active');
+    document.getElementById('htp-gamestart-wrap').style.display = (htpSource === 'welcome') ? 'block' : 'none';
 }
 
 function closeHTP() {
@@ -1338,6 +1344,12 @@ function closeHTP() {
         pauseAt = null;
         timerOn = true;
     }
+}
+
+// [추가] How to Play에서 학습목표·게임방법 확인 후 바로 Game Start(팀 설정)로 이동
+function startFromHTP() {
+    closeHTP();
+    goToSetupFirst();
 }
 
 window.addEventListener('keydown', e => {
