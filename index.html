@@ -711,19 +711,51 @@
 
 <script>
 const CATEGORY_DATA = {
-  "숫자와 색깔": { "Number": [], "Color": [] },
-  "사람과 동물": { "Body": [], "Family": [], "Animal": [] },
-  "취미와 직업": { "Hobby": [], "Subject": [], "Job": [] },
-  "음식": { "Fruit & Vegetable": [], "Food": [] },
-  "국가와 자연": { "Nature & Weather": [], "Country": [] },
-  "장소와 교통": { "Place": ["school", "home", "park", "store", "hospital", "bank", "library", "zoo", "station"], "Transportation": ["bus", "taxi", "subway", "train", "car", "bike", "plane", "ship", "truck"] },
-  "물건": { 
-    "School": ["textbook", "pencil", "eraser", "glue stick", "notebook", "ruler", "scissors", "pencil case", "backpack", "crayon", "computer", "board"],
-    "House": ["door", "window", "bed", "chair", "desk", "clock", "robot", "doll", "umbrella", "fan", "lamp", "sofa"],
-    "Clothing": ["cap", "hat", "jacket", "dress", "skirt", "pants", "shoes", "gloves", "glasses", "socks", "shirt", "scarf"]
+  "숫자·색깔·시간": {
+    "Number": ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen"],
+    "Color": ["white", "black", "red", "orange", "yellow", "green", "blue", "purple", "brown", "gray", "pink", "color", "rainbow"],
+    "Time & Date": ["day", "week", "month", "year", "morning", "afternoon", "evening", "night", "time", "today", "tomorrow", "yesterday", "weekend", "noon", "season"]
   },
-  "동작": { "Action": ["run", "jump", "walk", "fly", "swim", "sing", "dance", "read", "write", "speak", "sleep", "eat"] },
-  "특징과 감정": { "Character": ["kind", "nice", "smart", "tall", "short", "big", "small", "fast", "slow"], "Condition": ["happy", "sad", "angry", "tired", "sick", "hungry", "thirsty", "good", "bad"] }
+  "사람과 동물": {
+    "Body": ["eye", "nose", "ear", "mouth", "tooth", "face", "neck", "hair", "head", "foot", "finger", "leg", "arm", "skin", "hand"],
+    "Family & People": ["mom", "dad", "grandma", "grandpa", "sister", "brother", "parents", "uncle", "aunt", "cousin", "baby", "child", "boy", "girl", "man"],
+    "Animal": ["bear", "bird", "cat", "cow", "dog", "duck", "elephant", "fish", "fox", "frog", "giraffe", "horse", "kangaroo", "lion", "monkey"]
+  },
+  "취미·과목·직업": {
+    "Sports & Hobby": ["soccer", "baseball", "basketball", "badminton", "tennis", "table tennis", "taekwondo", "swimming", "skating", "skiing", "camping", "hiking", "drawing", "painting", "cooking"],
+    "Subject & Class": ["English", "Korean", "Math", "Science", "History", "Art", "Music", "P.E.", "subject", "class", "lesson", "homework", "test", "vacation", "grade"],
+    "Job": ["cook", "doctor", "pilot", "singer", "painter", "nurse", "teacher", "actor", "scientist", "photographer", "firefighter", "police officer", "writer", "dentist", "zookeeper"]
+  },
+  "음식과 음료": {
+    "Fruit & Vegetable": ["apple", "banana", "grape", "lemon", "kiwi", "watermelon", "strawberry", "peach", "pear", "melon", "potato", "tomato", "carrot", "corn", "onion"],
+    "Meal & Snack": ["bread", "rice", "cake", "cheese", "chicken", "chocolate", "cookie", "hamburger", "pizza", "salad", "sandwich", "spaghetti", "steak", "beef", "egg"],
+    "Drink & Taste": ["water", "milk", "juice", "lemonade", "tea", "coffee", "sweet", "salty", "sour", "spicy", "bitter", "sugar", "salt", "taste", "delicious"]
+  },
+  "국가와 자연": {
+    "Country": ["Korea", "the U.S.", "the U.K.", "Japan", "China", "Vietnam", "Thailand", "India", "Italy", "France", "Spain", "Germany", "Sweden", "Canada", "Mexico"],
+    "Nature": ["earth", "flower", "tree", "leaves", "forest", "mountain", "river", "sea", "beach", "lake", "grass", "sky", "star", "sun", "moon"],
+    "Weather": ["weather", "cloud", "cloudy", "sunny", "raining", "snowing", "windy", "foggy", "lightning", "storm", "snowman", "ice", "snow", "rain", "wind"]
+  },
+  "장소·교통·방향": {
+    "Place": ["bank", "bakery", "bookstore", "market", "restaurant", "store", "hospital", "library", "park", "school", "museum", "airport", "church", "city hall", "police station"],
+    "Transportation": ["bike", "bus", "car", "taxi", "truck", "train", "subway", "airplane", "flight", "police car", "ship", "boat", "fire truck"],
+    "Direction & Position": ["down", "left", "right", "straight", "front", "back", "behind", "under", "over", "top", "bottom", "middle", "near", "next to", "between"]
+  },
+  "물건": {
+    "School Supplies": ["textbook", "book", "notebook", "pencil", "pencil case", "eraser", "ruler", "scissors", "glue stick", "crayon", "board", "map", "paper", "computer", "bag"],
+    "Household": ["door", "window", "bed", "chair", "desk", "table", "sofa", "clock", "lamp", "fan", "mirror", "sink", "stair", "towel", "toothbrush"],
+    "Clothing": ["cap", "hat", "coat", "jacket", "shirt", "T-shirt", "sweater", "dress", "skirt", "pants", "hairpin", "socks", "shoes", "sunglasses", "gloves"]
+  },
+  "동작": {
+    "Daily Action": ["get up", "wash", "brush", "eat", "drink", "sleep", "open", "close", "sit", "stand", "read", "write", "study", "clean", "make"],
+    "Move & Play": ["go", "come", "run", "walk", "jump", "fly", "ride", "play", "dance", "move", "enter", "catch", "kick", "throw", "climb"],
+    "Talk & Feel": ["talk", "say", "tell", "ask", "answer", "call", "listen", "sing", "meet", "visit", "give", "thank", "welcome", "like", "want"]
+  },
+  "특징과 감정": {
+    "Look": ["big", "small", "large", "tall", "short", "long", "slim", "fat", "thin", "heavy", "light", "strong", "weak", "straight", "curly"],
+    "Character": ["good", "bad", "kind", "nice", "brave", "funny", "smart", "quiet", "honest", "lazy", "cool", "shy"],
+    "Feeling": ["happy", "sad", "angry", "glad", "excited", "afraid", "tired", "sleepy", "hungry", "thirsty", "sick", "busy", "surprised"]
+  }
 };
 
 const masterColors = [
@@ -832,15 +864,15 @@ function initCategoryMenu() {
   
   // 기획안 기준 대분류별 영문 매핑 구조
   const categoryEnglishMap = {
-    "숫자와 색깔": "Number & Color",
+    "숫자·색깔·시간": "Number, Color & Time",
     "사람과 동물": "People & Animal",
-    "취미와 직업": "Hobby & Job",
-    "음식": "Food",
-    "국가와 자연": "Country & Nature",
-    "장소와 교통": "Places & Transportation",
+    "취미·과목·직업": "Hobby, Subject & Job",
+    "음식과 음료": "Food & Drink",
+    "국가와 자연": "Country, Nature & Weather",
+    "장소·교통·방향": "Place, Transportation & Direction",
     "물건": "Things",
     "동작": "Action",
-    "특징과 감정": "Conditions"
+    "특징과 감정": "Character & Feeling"
   };
   
   Object.keys(CATEGORY_DATA).forEach(cat => {
