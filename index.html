@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WORD RACE</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Fredoka:wght@500;600;700&family=Baloo+2:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Fredoka:wght@500;600;700&family=Baloo+2:wght@500;600;700;800&family=Jua&display=swap" rel="stylesheet">
     <style>
         * {
             box-sizing: border-box;
@@ -13,7 +13,7 @@
         :root {
             --bg-color: #f8fafc;
             --text-color: #1e293b;
-            --f-cute: 'Fredoka','Baloo 2','Segoe UI Rounded',system-ui,'Malgun Gothic',sans-serif;
+            --f-cute: 'Fredoka','Baloo 2','Jua','Segoe UI Rounded',system-ui,'Malgun Gothic',sans-serif;
             --t-red:#F0604F; --t-yellow:#E6A62A; --t-green:#63B646;
             --t-blue:#3592DE; --t-purple:#9068D2; --t-pink:#E56AA6;
             --r-pill: 999px; --r-xl: 28px; --r-lg: 20px;
@@ -309,7 +309,7 @@
         .group-card:hover { transform: translateY(-4px); }
         .group-card .car-ico { width:88px; height:88px; position:absolute; top:-30px; left:50%; transform: translateX(-50%); filter: drop-shadow(0 6px 6px rgba(0,0,0,.3)); }
         .group-input { width:100%; text-align:center; padding:9px; border-radius:8px; font-family: var(--f-cute); font-weight:700; background:#f8fafc; color:#334155; border:2px solid var(--team-c, #cbd5e1); letter-spacing:.5px; }
-        .btn-cnt { width:60px; height:60px; border-radius:50%; font-family: var(--f-cute); font-size:2rem; font-weight:700; background: linear-gradient(180deg, #DBEAFE, #93C5FD); color:#1E5FC0; border:4px solid #fff; box-shadow: 0 5px 0 #60A5FA, 0 8px 14px rgba(30,64,175,0.2); cursor:pointer; display:flex; align-items:center; justify-content:center; transition: transform 0.18s cubic-bezier(.34,1.56,.64,1), box-shadow 0.18s ease; }
+        .btn-cnt { width:44px; height:44px; border-radius:50%; font-family: var(--f-cute); font-size:1.5rem; font-weight:700; background: linear-gradient(180deg, #DBEAFE, #93C5FD); color:#1E5FC0; border:3px solid #fff; box-shadow: 0 4px 0 #60A5FA, 0 6px 12px rgba(30,64,175,0.2); cursor:pointer; display:flex; align-items:center; justify-content:center; transition: transform 0.18s cubic-bezier(.34,1.56,.64,1), box-shadow 0.18s ease; }
         .btn-cnt:hover { transform: translateY(-3px) scale(1.1) rotate(-6deg); }
         .btn-cnt:active { transform: translateY(3px) scale(0.95); box-shadow: 0 1px 0 #60A5FA; }
         @keyframes countPop {
@@ -417,10 +417,10 @@
             border-radius: var(--r-pill);
             border: 4px solid #ffffff;
             box-shadow: 0 6px 0 #BFDBFE, 0 10px 20px rgba(30,64,175,0.15);
-            padding: 6px 30px;
+            padding: 6px 24px;
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 14px;
         }
         .count-panel .label {
             font-family: var(--f-cute);
@@ -432,11 +432,11 @@
             font-family: 'Orbitron', sans-serif;
             color: #1E5FC0;
             background: #eff6ff;
-            border: 4px solid #BFDBFE;
-            box-shadow: 0 4px 0 #BFDBFE, inset 0 2px 4px rgba(0,0,0,0.06);
+            border: 3px solid #BFDBFE;
+            box-shadow: 0 3px 0 #BFDBFE, inset 0 2px 4px rgba(0,0,0,0.06);
             border-radius: 50%;
-            width: 70px;
-            height: 70px;
+            width: 52px;
+            height: 52px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -627,6 +627,17 @@
             position: absolute; bottom: 18px; right: 18px; background: #1e5fc0; color: #fff; width: 56px; height: 56px; border: none; border-radius: 16px; display: none; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 8px 18px rgba(30,95,192,0.25);
         }
         #pg-game .action-btn.visible { display: flex; }
+        #pg-game .mobile-space-btn {
+            position: absolute; bottom: 18px; left: 50%; transform: translateX(-50%);
+            font-family: var(--f-cute); font-weight: 800; font-size: 1.05rem; letter-spacing: .5px;
+            color: #fff; background: linear-gradient(180deg, #5AA3EF 0%, #1E5FC0 100%);
+            border: 3px solid #ffffff; border-radius: 999px; padding: 14px 32px;
+            display: flex; align-items: center; gap: 8px; cursor: pointer; z-index: 15;
+            box-shadow: 0 6px 0 #14428c, 0 10px 18px rgba(20,66,140,0.3);
+        }
+        #pg-game .mobile-space-btn:active {
+            transform: translateX(-50%) translateY(4px); box-shadow: 0 2px 0 #14428c;
+        }
         #pg-game .start-ov {
             position: absolute;
             inset: 0;
@@ -710,6 +721,15 @@
   <span id="fullscreen-toggle-icon">⛶</span>
 </button>
 
+<!-- 실제 게임 화면에서만 표시되는 홈/뒤로 버튼 (음악·전체화면 버튼과 대칭되는 왼쪽 위 위치) -->
+<button type="button" id="game-back-btn" onclick="exitGameToSubcategory()" style="display:none;position:fixed;top:18px;left:18px;z-index:1000000;width:52px;height:52px;border-radius:9999px;border:3px solid #ffffff;background:#ffb74d;box-shadow:0 4px 0 #f57c00;align-items:center;justify-content:center;cursor:pointer;font-size:22px;color:#ffffff;" title="뒤로">
+  ◀
+</button>
+
+<button type="button" id="game-home-btn" onclick="exitGameToHome()" style="display:none;position:fixed;top:18px;left:80px;z-index:1000000;width:52px;height:52px;border-radius:9999px;border:3px solid #ffffff;background:#66bb6a;box-shadow:0 4px 0 #388e3c;align-items:center;justify-content:center;cursor:pointer;font-size:22px;color:#ffffff;" title="처음으로">
+  🏠
+</button>
+
 <div class="game-container">
     <div id="pg-welcome" class="page active" style="justify-content: center;">
         <div style="flex-grow: 1;"></div>
@@ -725,7 +745,7 @@
             <button class="home-btn" onclick="goHomeFromSelection()"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3l9 8h-3v9h-5v-6h-2v6H6v-9H3z"/></svg>처음으로</button>
             <button class="forward-btn" onclick="forwardFromSetup()">앞으로</button>
         </div>
-        <div class="text-center mt-2 mb-4" style="position:relative; z-index:1; padding-top:60px;">
+        <div class="text-center mt-2 mb-2" style="position:relative; z-index:1; padding-top:30px;">
             <h2 class="text-5xl mb-3 race-heading">팀 설정하기</h2>
             <p class="text-2xl font-medium race-subtext">아래에서 팀 수, 팀 색깔, 팀 이름을 정해 주세요.</p>
         </div>
@@ -733,10 +753,10 @@
             <div class="count-panel">
                 <span class="label text-xl">참가 팀 수</span>
                 <button class="btn-cnt" onclick="chgCount(-1)">-</button>
-                <span id="countDisp" class="font-black text-4xl">6</span>
+                <span id="countDisp" class="font-black text-2xl">6</span>
                 <button class="btn-cnt" onclick="chgCount(1)">+</button>
             </div>
-            <div id="groupGrid" class="grid grid-cols-3 gap-3 w-full max-w-[800px]"></div>
+            <div id="groupGrid" class="grid grid-cols-3 gap-3 w-full max-w-[800px]" style="margin-top:32px;"></div>
             <button onclick="goToCategoryAfterSetup()" class="cta-race-btn mt-2">
                 주제 선택하러 가기
             </button>
@@ -826,6 +846,9 @@
         </div>
 
         <button id="nextBtn" class="action-btn" onclick="handleNext()">➤</button>
+
+        <!-- 모바일에는 물리 스페이스바가 없으므로 탭으로 대신할 수 있는 버튼 -->
+        <button id="mobileSpaceBtn" class="mobile-space-btn" type="button" onclick="triggerSpaceAction()">👆 SPACE</button>
     </div>
 </div>
 
@@ -864,7 +887,7 @@
         <p style="text-align: center; font-weight: 700; color: #1e5fc0; font-size: 1.15rem; margin: 0 0 20px; white-space: nowrap;">학습목표: Word Race 게임을 하며 단어를 빠르고 정확하게 읽어 봅시다.</p>
         <div style="font-size: 1.2rem; color: #334155; line-height: 1.8;">
           <p><strong>1.</strong> "팀 설정하기"에서 팀 수, 팀 색깔, 팀 이름을 정합니다.</p>
-          <p><strong>2.</strong> 주제 카테고리를 고르고 소주제를 복수 선택합니다.</p>
+          <p><strong>2.</strong> 배우고 싶은 주제를 고른 다음, 그 안에서 하고 싶은 소주제를 하나 이상 골라요.</p>
           <p class="hanging-indent"><strong>3.</strong> 화면에 우리 팀 색깔이 나오면 자리에서 일어나, 팀원들과 동시에 단어를 소리 내어 읽습니다.</p>
           <p><strong>4.</strong> 화면의 단어를 모두 읽으면 라운드가 종료됩니다.</p>
           <p class="hanging-indent"><strong>5.</strong> 이전 라운드보다 기록을 단축시켜야 다음 라운드를 도전할 수 있습니다.</p>
@@ -954,18 +977,30 @@ function initBgm() {
 window.addEventListener('load', initBgm);
 
 /* ================= FULLSCREEN ================= */
+// iOS Safari는 일반 요소의 전체화면 API 자체를 지원하지 않아 아래 폴백으로도 해결되지 않음.
+// 구형 안드로이드 브라우저/인앱 웹뷰 대응용 webkit 접두사 폴백만 추가.
+function getFullscreenElement() {
+    return document.fullscreenElement || document.webkitFullscreenElement;
+}
 function toggleFullscreen() {
-    if (!document.fullscreenElement) {
-        document.documentElement.requestFullscreen().catch(() => {});
-    } else if (document.exitFullscreen) {
-        document.exitFullscreen();
+    const el = document.documentElement;
+    if (!getFullscreenElement()) {
+        const request = el.requestFullscreen || el.webkitRequestFullscreen;
+        if (request) {
+            const result = request.call(el);
+            if (result && result.catch) result.catch(() => {});
+        }
+    } else {
+        const exit = document.exitFullscreen || document.webkitExitFullscreen;
+        if (exit) exit.call(document);
     }
 }
 function updateFullscreenIcon() {
     const icon = document.getElementById('fullscreen-toggle-icon');
-    if (icon) icon.textContent = document.fullscreenElement ? '❐' : '⛶';
+    if (icon) icon.textContent = getFullscreenElement() ? '❐' : '⛶';
 }
 document.addEventListener('fullscreenchange', updateFullscreenIcon);
+document.addEventListener('webkitfullscreenchange', updateFullscreenIcon);
 
 const CATEGORY_DATA = {
   "숫자·색깔·시간": {
@@ -1081,6 +1116,12 @@ function showPage(pageId) {
     
     const htpBtn = document.getElementById('htpBtn');
     if(htpBtn) htpBtn.style.display = (pageId === 'pg-setup' || pageId === 'pg-game') ? 'block' : 'none';
+
+    const gameBackBtn = document.getElementById('game-back-btn');
+    const gameHomeBtn = document.getElementById('game-home-btn');
+    if(gameBackBtn) gameBackBtn.style.display = (pageId === 'pg-game') ? 'flex' : 'none';
+    if(gameHomeBtn) gameHomeBtn.style.display = (pageId === 'pg-game') ? 'flex' : 'none';
+
     page = pageId;
 
     if(pageId === 'pg-category') {
@@ -1406,6 +1447,25 @@ function goSetup(){
   showPage('pg-setup'); // 재설정 시 팀 설정부터 처음 순서대로 진입
 }
 
+// 게임 화면 전용 홈/뒤로 버튼: 진행 중이던 타이머·모달을 정리하고 이동
+function exitGameToHome() {
+  timerOn = false;
+  gameStarted = false;
+  countdownActive = false;
+  repModal.classList.remove('active');
+  resModal.classList.remove('active');
+  showPage('pg-welcome');
+}
+
+function exitGameToSubcategory() {
+  timerOn = false;
+  gameStarted = false;
+  countdownActive = false;
+  repModal.classList.remove('active');
+  resModal.classList.remove('active');
+  showPage('pg-subcategory');
+}
+
 function playSuccess(){
   try{
     const A=window.AudioContext||window.webkitAudioContext; if(!A)return;
@@ -1440,9 +1500,11 @@ function renderGroups(){
     const card=document.createElement('div');
     card.className='group-card';
     card.style.setProperty('--team-c', c.hex);
-    card.innerHTML=`<svg class="car-ico" viewBox="0 0 24 24" fill="${c.hex}"><path d="M5 11l1.5-4A2 2 0 018.4 6h7.2a2 2 0 011.9 1.3L19 11h1a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 11-4 0H9a2 2 0 11-4 0H4a1 1 0 01-1-1v-3a1 1 0 011-1z"/></svg><label style="font-family:'Orbitron',sans-serif;font-weight:800;font-size:1.15rem;letter-spacing:1px;margin-bottom:10px;margin-top:22px;color:${c.hex}">${c.name}</label><input type="text" id="inp-${c.id}" class="group-input" value="${val}">`;
+    card.innerHTML=`<svg class="car-ico" viewBox="0 0 24 24" fill="${c.hex}"><path d="M5 11l1.5-4A2 2 0 018.4 6h7.2a2 2 0 011.9 1.3L19 11h1a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 11-4 0H9a2 2 0 11-4 0H4a1 1 0 01-1-1v-3a1 1 0 011-1z"/></svg><label style="font-family:'Orbitron',sans-serif;font-weight:800;font-size:1.5rem;letter-spacing:1px;margin-bottom:10px;margin-top:22px;color:${c.hex}">${c.name}</label><input type="text" id="inp-${c.id}" class="group-input" value="${val}">`;
     const inp=card.querySelector('input');
     inp.addEventListener('keydown',e=>{if(e.key==='Enter')inp.blur();});
+    inp.addEventListener('focus',()=>{if(inp.value===c.def)inp.value='';});
+    inp.addEventListener('blur',()=>{if(!inp.value.trim())inp.value=c.def;});
     groupGrid.appendChild(card);
   });
 }
@@ -1632,6 +1694,41 @@ function startFromHTP() {
     goToSetupFirst();
 }
 
+// 스페이스바 누르기와 동일한 동작. 물리 키보드가 없는 모바일에서
+// 화면의 스페이스 버튼을 탭했을 때도 이 함수를 그대로 호출한다.
+function triggerSpaceAction() {
+    if(htpModal.classList.contains('active')) return;
+
+    if(page === 'pg-setup') {
+        goToCategoryAfterSetup();
+        return;
+    }
+
+    if(page === 'pg-game') {
+        if(resModal.classList.contains('active') || repModal.classList.contains('active')) return;
+        if (!gameStarted && !countdownActive) {
+            startCountdown();
+            return;
+        }
+        if (!gameStarted) return;
+        if(revIdx < cellCount - 1) {
+            revIdx++;
+            const cell = grid.children[revIdx];
+            const ov = document.getElementById('ov-' + revIdx);
+            if(cell) cell.classList.add('revealed');
+            if(ov) ov.classList.add('revealed');
+        }
+        else if(revIdx === cellCount - 1 && timerOn) {
+            playSuccess();
+            const end = Date.now();
+            let off = pausedMs;
+            if(pauseAt) off += end - pauseAt;
+            timerOn = false;
+            showResult((end - startTime - off) / 1000);
+        }
+    }
+}
+
 window.addEventListener('keydown', e => {
     if(e.code !== 'Space') return;
     if(document.activeElement && document.activeElement.tagName === 'INPUT') return;
@@ -1640,34 +1737,7 @@ window.addEventListener('keydown', e => {
     if(!htpModal.classList.contains('active')) e.preventDefault();
     else return;
 
-    if(page === 'pg-setup') { 
-        goToCategoryAfterSetup(); 
-        return;
-    }
-    
-    if(page === 'pg-game') { 
-        if(resModal.classList.contains('active') || repModal.classList.contains('active')) return;
-        if (!gameStarted && !countdownActive) {
-            startCountdown();
-            return;
-        }
-        if (!gameStarted) return;
-        if(revIdx < cellCount - 1) {
-            revIdx++; 
-            const cell = grid.children[revIdx];
-            const ov = document.getElementById('ov-' + revIdx);
-            if(cell) cell.classList.add('revealed');
-            if(ov) ov.classList.add('revealed');
-        } 
-        else if(revIdx === cellCount - 1 && timerOn) {
-            playSuccess(); 
-            const end = Date.now();
-            let off = pausedMs; 
-            if(pauseAt) off += end - pauseAt;
-            timerOn = false; 
-            showResult((end - startTime - off) / 1000);
-        }
-    }
+    triggerSpaceAction();
 });
 
 if (startBtn) {
