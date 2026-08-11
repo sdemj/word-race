@@ -706,6 +706,10 @@
   <span id="music-toggle-icon">🎵</span>
 </button>
 
+<button type="button" id="fullscreen-toggle-btn" onclick="toggleFullscreen()" style="position:fixed;top:18px;right:80px;z-index:1000000;width:52px;height:52px;border-radius:9999px;border:3px solid #ffffff;background:#1E5FC0;box-shadow:0 4px 0 #14428c;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:22px;color:#ffffff;">
+  <span id="fullscreen-toggle-icon">⛶</span>
+</button>
+
 <div class="game-container">
     <div id="pg-welcome" class="page active" style="justify-content: center;">
         <div style="flex-grow: 1;"></div>
@@ -948,6 +952,20 @@ function initBgm() {
     document.addEventListener('touchstart', unlockAudio);
 }
 window.addEventListener('load', initBgm);
+
+/* ================= FULLSCREEN ================= */
+function toggleFullscreen() {
+    if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {});
+    } else if (document.exitFullscreen) {
+        document.exitFullscreen();
+    }
+}
+function updateFullscreenIcon() {
+    const icon = document.getElementById('fullscreen-toggle-icon');
+    if (icon) icon.textContent = document.fullscreenElement ? '❐' : '⛶';
+}
+document.addEventListener('fullscreenchange', updateFullscreenIcon);
 
 const CATEGORY_DATA = {
   "숫자·색깔·시간": {
