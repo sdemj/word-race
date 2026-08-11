@@ -71,13 +71,13 @@
         /* 대분류/소분류 통합 선택 버튼 스타일 */
         .selection-heading {
             font-family: var(--f-cute);
-            font-size: 2.6rem;
-            font-weight: 700;
-            color: #4a4520;
+            font-size: 2.4rem;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            color: #ffffff;
             margin-bottom: 25px;
-            text-shadow: 0 2px 0 rgba(255,255,255,0.85);
+            text-shadow: -2px -2px 0 #1E5FC0, 2px -2px 0 #1E5FC0, -2px 2px 0 #1E5FC0, 2px 2px 0 #1E5FC0, 0 6px 14px rgba(20,66,140,0.4);
             text-align: center;
-            letter-spacing: -0.5px;
         }
         .grid-menu {
             display: grid;
@@ -89,8 +89,8 @@
         }
 .menu-box-btn {
             font-family: var(--f-cute);
-            background: linear-gradient(180deg, #fdf6e3 0%, #e8d9a8 100%);
-            border: 4px solid #d9c17a;
+            background: linear-gradient(180deg, #5AA3EF 0%, #1E5FC0 100%);
+            border: 4px solid #ffffff;
             border-radius: 32px;
             padding: 15px 10px;
             display: flex;
@@ -99,8 +99,8 @@
             justify-content: center;
             font-size: 1.2rem;
             font-weight: 700;
-            color: #4a4520;
-            box-shadow: 0 6px 0 #b8860b, 0 10px 15px rgba(74,69,32,0.15);
+            color: #ffffff;
+            box-shadow: 0 6px 0 #14428c, 0 10px 18px rgba(20,66,140,0.3);
             cursor: pointer;
             transition: all 0.15s cubic-bezier(.34,1.56,.64,1);
             box-sizing: border-box;
@@ -108,13 +108,15 @@
 
             /* ──────── [크기 및 정사각형 조절 핵심 부분] ──────── */
             width: 180px;               /* 1. 원하는 가로 크기를 px로 지정하세요 (예: 160px, 180px 등) */
+            min-width: 0;                /* 긴 영단어 하나 때문에 버튼 폭이 180px보다 넓어지는 것을 방지 */
+            overflow-wrap: break-word;   /* 긴 단어는 박스 안에서 줄바꿈되도록 처리 */
             aspect-ratio: 1 / 0.8;        /* 2. 가로세로 비율을 1:1로 맞춰 항상 정사각형이 되도록 고정합니다 */
             /* 기존 height: 90px; 은 자동으로 비율을 맞추기 위해 과감히 지워줍니다! */
             /* ────────────────────────────────────────────────── */
         }
         .menu-box-btn:hover {
             transform: translateY(-3px) scale(1.03);
-            box-shadow: 0 9px 0 #b8860b, 0 14px 18px rgba(74,69,32,0.2);
+            box-shadow: 0 9px 0 #14428c, 0 14px 22px rgba(20,66,140,0.35);
             z-index: 30;
         }
         .word-tooltip {
@@ -122,7 +124,7 @@
             bottom: calc(100% + 14px);
             left: 50%;
             transform: translateX(-50%) translateY(6px);
-            background: #4a4520;
+            background: #14428c;
             color: #ffffff;
             font-family: var(--f-cute);
             font-weight: 600;
@@ -150,7 +152,7 @@
             transform: translateX(-50%);
             border-width: 8px;
             border-style: solid;
-            border-color: #4a4520 transparent transparent transparent;
+            border-color: #14428c transparent transparent transparent;
         }
         .menu-box-btn:hover .word-tooltip {
             opacity: 1;
@@ -158,20 +160,20 @@
             transform: translateX(-50%) translateY(0);
         }
         .menu-box-btn.active {
-            background: linear-gradient(180deg, #fdf0d0 0%, #d9b25c 100%) !important;
-            border-color: #b8860b !important;
-            box-shadow: 0 4px 0 #8b6914 !important;
-            color: #5c4813 !important;
+            background: linear-gradient(180deg, #ffe08a 0%, #fbbf24 100%) !important;
+            border-color: #ffffff !important;
+            box-shadow: 0 4px 0 #d97706 !important;
+            color: #7a4e00 !important;
             transform: translateY(2px) scale(1.02);
         }
         .menu-box-btn span {
             font-size: 0.9rem;
-            color: #7a7040;
+            color: #eaf3ff;
             font-weight: 500;
             margin-top: 4px;
         }
         .menu-box-btn.active span {
-            color: #5c4813;
+            color: #7a4e00;
         }
         .menu-box-btn.full-width {
             width: 100%;
@@ -187,13 +189,13 @@
             font-family: var(--f-cute);
             font-size: 1.4rem;
             font-weight: 600;
-            color: #8b6914;
+            color: #1E5FC0;
             margin-bottom: 15px;
-            background: rgba(255, 255, 255, 0.85);
+            background: #ffffff;
             padding: 6px 22px;
             border-radius: var(--r-pill);
-            border: 3px solid #d9c17a;
-            box-shadow: 0 3px 8px rgba(74,69,32,0.12);
+            border: 3px solid #BFDBFE;
+            box-shadow: 0 3px 8px rgba(30,64,175,0.12);
             align-self: center;
             width: fit-content;
         }
@@ -302,12 +304,14 @@
         .mbtn-next { background: #ff6b00; color: #fff; }
         .mbtn-retry { background: #ef4444; color: #fff; }
         
-        .group-card { border-radius:32px; padding:22px 18px; display:flex; flex-direction:column; align-items:center; background:rgba(255,255,255,0.15); border:4px solid rgba(255,255,255,0.35); box-shadow: 0 8px 18px rgba(31,58,110,0.12); transition: transform 0.15s ease; }
-        .group-card:hover { transform: translateY(-2px); }
-        .group-input { width:100%; text-align:center; padding:10px; border-radius:var(--r-pill); font-family: var(--f-cute); font-weight:600; background:#fff; color:#334155; border:3px solid rgba(255,255,255,0.6); box-shadow: inset 0 2px 4px rgba(0,0,0,0.06); }
-        .btn-cnt { width:60px; height:60px; border-radius:50%; font-family: var(--f-cute); font-size:2rem; font-weight:700; background: linear-gradient(180deg, #d9b25c, #b8860b); color:#fff; border:4px solid #fff; box-shadow: 0 5px 0 #8b6914, 0 8px 14px rgba(74,69,32,0.25); cursor:pointer; display:flex; align-items:center; justify-content:center; transition: transform 0.18s cubic-bezier(.34,1.56,.64,1), box-shadow 0.18s ease; }
+        .group-card { position:relative; overflow:visible; border-radius:18px; padding:44px 14px 16px; display:flex; flex-direction:column; align-items:center; background: linear-gradient(180deg, #ffffff, #f1f5f9); border:3px solid var(--team-c, #facc15); box-shadow: 0 8px 18px rgba(31,58,110,0.18); transition: transform 0.15s ease; }
+        .group-card::before { content:''; position:absolute; bottom:0; left:0; right:0; height:8px; background: repeating-linear-gradient(90deg, #1e293b 0 8px, #f8fafc 8px 16px); border-radius:0 0 14px 14px; }
+        .group-card:hover { transform: translateY(-4px); }
+        .group-card .car-ico { width:88px; height:88px; position:absolute; top:-30px; left:50%; transform: translateX(-50%); filter: drop-shadow(0 6px 6px rgba(0,0,0,.3)); }
+        .group-input { width:100%; text-align:center; padding:9px; border-radius:8px; font-family: var(--f-cute); font-weight:700; background:#f8fafc; color:#334155; border:2px solid var(--team-c, #cbd5e1); letter-spacing:.5px; }
+        .btn-cnt { width:60px; height:60px; border-radius:50%; font-family: var(--f-cute); font-size:2rem; font-weight:700; background: linear-gradient(180deg, #DBEAFE, #93C5FD); color:#1E5FC0; border:4px solid #fff; box-shadow: 0 5px 0 #60A5FA, 0 8px 14px rgba(30,64,175,0.2); cursor:pointer; display:flex; align-items:center; justify-content:center; transition: transform 0.18s cubic-bezier(.34,1.56,.64,1), box-shadow 0.18s ease; }
         .btn-cnt:hover { transform: translateY(-3px) scale(1.1) rotate(-6deg); }
-        .btn-cnt:active { transform: translateY(3px) scale(0.95); box-shadow: 0 1px 0 #8b6914; }
+        .btn-cnt:active { transform: translateY(3px) scale(0.95); box-shadow: 0 1px 0 #60A5FA; }
         @keyframes countPop {
             0% { transform: scale(1); }
             45% { transform: scale(1.35) rotate(-4deg); }
@@ -345,8 +349,32 @@
         .back-btn:hover { transform: translateY(-2px); }
         .back-btn:active { transform: translateY(2px); box-shadow: 0 1px 0 #b8860b; }
 
-        .img-btn img { width: 200px; height: auto; display: block; }
-        .img-btn:hover { transform: scale(1.05); }
+        .welcome-menu-btn {
+            font-family: var(--f-cute);
+            font-weight: 700;
+            font-size: 1.3rem;
+            border: 4px solid #fff;
+            border-radius: var(--r-pill);
+            padding: 16px 34px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        .welcome-menu-btn:hover { transform: translateY(-2px); }
+        .welcome-htp-btn {
+            color: #fff;
+            background: linear-gradient(180deg,#5AA3EF,#1E5FC0);
+            box-shadow: 0 6px 0 #14428c, 0 10px 18px rgba(20,66,140,.3);
+        }
+        .welcome-htp-btn:active { transform: translateY(2px); box-shadow: 0 2px 0 #14428c; }
+        .welcome-start-btn {
+            color: #7a4e00;
+            background: linear-gradient(180deg,#ffe08a,#fbbf24);
+            box-shadow: 0 6px 0 #d97706, 0 10px 18px rgba(217,119,6,.3);
+        }
+        .welcome-start-btn:active { transform: translateY(2px); box-shadow: 0 2px 0 #d97706; }
 
         #htpBtn {
             background: #fbbf24; color: #ffffff; border: 3px solid #ffffff; box-shadow: 0 4px 0 #b45309;
@@ -354,7 +382,130 @@
         }
         #htpBtn:hover { transform: scale(1.1) rotate(5deg); background: #f59e0b; }
         
-        #pg-setup, #pg-category, #pg-subcategory { justify-content: center; }
+        #pg-category, #pg-subcategory { justify-content: center; }
+
+        /* ===== pg-setup / pg-category / pg-subcategory : 레이싱 컨셉 디자인 ===== */
+        #pg-setup, #pg-category, #pg-subcategory {
+            background: linear-gradient(180deg, #6EC2F2 0%, #9AD8FA 45%, #CDEBFC 100%);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+        #pg-setup { justify-content: flex-start; }
+        #pg-setup::before, #pg-category::before, #pg-subcategory::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 22px; z-index: 1;
+            background: repeating-linear-gradient(90deg, #1e293b 0 22px, #f8fafc 22px 44px);
+        }
+        #pg-setup::after, #pg-category::after, #pg-subcategory::after {
+            content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 22px; z-index: 1;
+            background: repeating-linear-gradient(90deg, #1e293b 0 22px, #f8fafc 22px 44px);
+        }
+        .race-heading {
+            font-family: var(--f-cute);
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            color: #ffffff;
+            text-shadow: -2px -2px 0 #1E5FC0, 2px -2px 0 #1E5FC0, -2px 2px 0 #1E5FC0, 2px 2px 0 #1E5FC0, 0 6px 14px rgba(20,66,140,0.4);
+        }
+        .race-subtext {
+            font-family: var(--f-cute);
+            font-weight: 600;
+            color: #14428c;
+            text-shadow: 0 1px 0 rgba(255,255,255,0.6);
+        }
+        .count-panel {
+            background: #ffffff;
+            border-radius: var(--r-pill);
+            border: 4px solid #ffffff;
+            box-shadow: 0 6px 0 #BFDBFE, 0 10px 20px rgba(30,64,175,0.15);
+            padding: 6px 30px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .count-panel .label {
+            font-family: var(--f-cute);
+            font-weight: 700;
+            color: #14428c;
+            letter-spacing: .3px;
+        }
+        #pg-setup #countDisp {
+            font-family: 'Orbitron', sans-serif;
+            color: #1E5FC0;
+            background: #eff6ff;
+            border: 4px solid #BFDBFE;
+            box-shadow: 0 4px 0 #BFDBFE, inset 0 2px 4px rgba(0,0,0,0.06);
+            border-radius: 50%;
+            width: 70px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .cta-race-btn {
+            font-family: 'Orbitron', var(--f-cute), sans-serif;
+            font-weight: 800;
+            font-size: 1.4rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #14171f;
+            background: repeating-linear-gradient(135deg, #facc15 0 14px, #fde047 14px 28px);
+            border: 4px solid #ffffff;
+            border-radius: var(--r-pill);
+            padding: 16px 46px;
+            box-shadow: 0 6px 0 #d97706, 0 10px 20px rgba(217,119,6,0.3);
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        .cta-race-btn:hover { transform: translateY(-3px); box-shadow: 0 9px 0 #d97706, 0 14px 24px rgba(217,119,6,0.35); }
+        .cta-race-btn:active { transform: translateY(3px); box-shadow: 0 2px 0 #d97706; }
+
+        #pg-subcategory .cta-race-btn {
+            align-self: center;
+            font-size: 1.1rem;
+            padding: 10px 32px;
+        }
+
+        #pg-setup .back-btn, #pg-category .back-btn, #pg-subcategory .back-btn {
+            top: 26px;
+            left: 80px;
+            color: #1E5FC0;
+            border-color: #BFDBFE;
+            box-shadow: 0 4px 0 #93C5FD, 0 6px 10px rgba(30,64,175,0.12);
+        }
+        #pg-setup .back-btn:active, #pg-category .back-btn:active, #pg-subcategory .back-btn:active { box-shadow: 0 1px 0 #93C5FD; }
+
+        .nav-topright-group {
+            position: absolute;
+            top: 26px;
+            right: 80px;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .home-btn, .forward-btn {
+            position: relative;
+            font-family: var(--f-cute);
+            font-weight: 700;
+            font-size: 1rem;
+            color: #1E5FC0;
+            background: #ffffff;
+            border: 3px solid #BFDBFE;
+            border-radius: var(--r-pill);
+            padding: 10px 20px;
+            cursor: pointer;
+            box-shadow: 0 4px 0 #93C5FD, 0 6px 10px rgba(30,64,175,0.12);
+            transition: all 0.15s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .home-btn:hover, .forward-btn:hover { transform: translateY(-2px); }
+        .home-btn:active, .forward-btn:active { transform: translateY(2px); box-shadow: 0 1px 0 #93C5FD; }
+        .home-btn svg { width: 16px; height: 16px; flex: none; }
 
         #pg-game .game-shell {
             width: 100%;
@@ -548,52 +699,67 @@
 </head>
 <body>
 
+<audio id="bgm-intro" src="fluxsound-cheerful-upbeat-kids-486631.mp3" loop preload="auto"></audio>
+<audio id="bgm-game" src="the_mountain-kid-450659.mp3" loop preload="auto"></audio>
+
+<button type="button" id="music-toggle-btn" onclick="toggleMusic()" style="position:fixed;top:18px;right:18px;z-index:1000000;width:52px;height:52px;border-radius:9999px;border:3px solid #ffffff;background:#93C5FD;box-shadow:0 4px 0 #60A5FA;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:22px;color:#ffffff;">
+  <span id="music-toggle-icon">🎵</span>
+</button>
+
 <div class="game-container">
     <div id="pg-welcome" class="page active" style="justify-content: center;">
         <div style="flex-grow: 1;"></div>
         <div class="menu-buttons">
-            <button class="img-btn" onclick="openHTP('welcome')">
-                <img src="btn3.png" alt="HOW TO PLAY">
-            </button>
-            <button class="img-btn" onclick="goToSetupFirst()">
-                <img src="btn2.png" alt="시작하기">
-            </button>
+            <button class="welcome-menu-btn welcome-htp-btn" onclick="openHTP('welcome')">How to Play</button>
+            <button class="welcome-menu-btn welcome-start-btn" onclick="goToSetupFirst()">팀 설정하기</button>
         </div>
     </div>
 
     <div id="pg-setup" class="page" style="padding-top: 20px; padding-bottom: 20px;">
-        <button class="back-btn" onclick="goBackToWelcome()">← 뒤로</button>
-        <div class="text-center mt-2 mb-4">
-            <h2 class="text-5xl mb-3" style="font-family: var(--f-cute); font-weight:700; color: #4a4520; text-shadow: 0 2px 0 rgba(255,255,255,0.85);">팀 설정하기</h2>
-            <p class="text-gray-500 text-2xl font-medium">아래에서 팀 수, 팀 색깔, 팀 이름을 정해 주세요.</p>
+        <button class="back-btn" onclick="goBackToWelcome()">뒤로</button>
+        <div class="nav-topright-group">
+            <button class="home-btn" onclick="goHomeFromSelection()"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3l9 8h-3v9h-5v-6h-2v6H6v-9H3z"/></svg>처음으로</button>
+            <button class="forward-btn" onclick="forwardFromSetup()">앞으로</button>
         </div>
-        <div class="w-full flex flex-col items-center gap-3"> 
-            <div class="flex items-center gap-6 bg-white p-3 px-8" style="border-radius: var(--r-pill); border: 3px solid #d9c17a; box-shadow: 0 4px 12px rgba(74,69,32,0.12);">
-                <span style="font-family: var(--f-cute); font-weight:600; color:#4a4520;" class="text-xl">참가 팀 수</span>
+        <div class="text-center mt-2 mb-4" style="position:relative; z-index:1; padding-top:60px;">
+            <h2 class="text-5xl mb-3 race-heading">팀 설정하기</h2>
+            <p class="text-2xl font-medium race-subtext">아래에서 팀 수, 팀 색깔, 팀 이름을 정해 주세요.</p>
+        </div>
+        <div class="w-full flex flex-col items-center gap-3" style="position:relative; z-index:1;">
+            <div class="count-panel">
+                <span class="label text-xl">참가 팀 수</span>
                 <button class="btn-cnt" onclick="chgCount(-1)">-</button>
-                <span id="countDisp" style="font-family: var(--f-cute); color:#b8860b; background:#fffaf0; border:4px solid #d9c17a; box-shadow: 0 4px 0 #d9c17a, inset 0 2px 4px rgba(0,0,0,0.06); border-radius:50%; width:70px; height:70px; display:flex; align-items:center; justify-content:center;" class="font-black text-4xl">6</span>
+                <span id="countDisp" class="font-black text-4xl">6</span>
                 <button class="btn-cnt" onclick="chgCount(1)">+</button>
             </div>
             <div id="groupGrid" class="grid grid-cols-3 gap-3 w-full max-w-[800px]"></div>
-            <button onclick="goToCategoryAfterSetup()" class="mt-2 px-12 py-4 text-white text-2xl hover:scale-105 transition-all" style="font-family: var(--f-cute); font-weight:700; background: #b8860b; border-radius: var(--r-pill); box-shadow: 0 6px 0 #8b6914, 0 10px 18px rgba(74,69,32,0.2);">
+            <button onclick="goToCategoryAfterSetup()" class="cta-race-btn mt-2">
                 주제 선택하러 가기
             </button>
         </div>
     </div>
 
     <div id="pg-category" class="page">
-        <button class="back-btn" onclick="goBackToSetup()">← 뒤로</button>
+        <button class="back-btn" onclick="goBackToSetup()">뒤로</button>
+        <div class="nav-topright-group">
+            <button class="home-btn" onclick="goHomeFromSelection()"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3l9 8h-3v9h-5v-6h-2v6H6v-9H3z"/></svg>처음으로</button>
+            <button class="forward-btn" onclick="forwardFromCategory()">앞으로</button>
+        </div>
         <h2 class="selection-heading">원하는 주제를 선택하세요.</h2>
         <div class="grid-menu" id="category-menu-grid"></div>
     </div>
 
     <div id="pg-subcategory" class="page">
-        <button class="back-btn" onclick="goBackToCategory()">← 뒤로</button>
+        <button class="back-btn" onclick="goBackToCategory()">뒤로</button>
+        <div class="nav-topright-group">
+            <button class="home-btn" onclick="goHomeFromSelection()"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3l9 8h-3v9h-5v-6h-2v6H6v-9H3z"/></svg>처음으로</button>
+            <button class="forward-btn" onclick="forwardFromSubcategory()">앞으로</button>
+        </div>
         <h2 class="selection-heading">주제를 선택하세요.</h2>
         <div id="all-btn-area" style="width: 100%; display: flex; justify-content: center; margin-bottom: 5px;"></div>
         <div class="grid-menu" id="subcategory-menu-grid"></div>
         <div class="status-counter" id="live-word-counter">0단어 선택됨</div>
-        <button class="start-btn" onclick="launchGameAfterSelection()">Game Start</button>
+        <button class="cta-race-btn" onclick="launchGameAfterSelection()">Game Start</button>
     </div>
 
 <div id="pg-game" class="page" style="justify-content: flex-start;">
@@ -713,6 +879,76 @@
 </div>
 
 <script>
+/* ================= BACKGROUND MUSIC ================= */
+const bgmTracks = {
+    intro: document.getElementById('bgm-intro'), // 인트로/팀설정/대분류/소분류 화면
+    game: document.getElementById('bgm-game')    // 실제 게임 화면
+};
+let currentBgmKey = 'intro';
+let trackMuted = { intro: false, game: false };
+let audioUnlocked = false;
+
+function syncBgmAudio(audio) {
+    if (!audio) return;
+    audio.muted = !audioUnlocked;
+}
+
+function updateMusicIcon() {
+    const icon = document.getElementById('music-toggle-icon');
+    if (icon) icon.textContent = trackMuted[currentBgmKey] ? '🔇' : '🎵';
+}
+
+function tryPlayCurrentBgm() {
+    const audio = bgmTracks[currentBgmKey];
+    if (!audio) return;
+    if (trackMuted[currentBgmKey]) { audio.pause(); return; }
+    syncBgmAudio(audio);
+    if (audio.paused) audio.play().catch(() => {});
+}
+
+function playBgm(key) {
+    if (currentBgmKey === key) return;
+    currentBgmKey = key;
+    Object.keys(bgmTracks).forEach(k => {
+        const audio = bgmTracks[k];
+        if (k === key) {
+            audio.currentTime = 0;
+            if (!trackMuted[key]) { syncBgmAudio(audio); audio.play().catch(() => {}); }
+        } else {
+            audio.pause();
+        }
+    });
+    updateMusicIcon();
+}
+
+function toggleMusic() {
+    trackMuted[currentBgmKey] = !trackMuted[currentBgmKey];
+    const audio = bgmTracks[currentBgmKey];
+    if (trackMuted[currentBgmKey]) {
+        audio.pause();
+    } else {
+        syncBgmAudio(audio);
+        audio.play().catch(() => {});
+    }
+    updateMusicIcon();
+}
+
+function initBgm() {
+    tryPlayCurrentBgm();
+    updateMusicIcon();
+    const unlockAudio = () => {
+        audioUnlocked = true;
+        tryPlayCurrentBgm();
+        document.removeEventListener('pointerdown', unlockAudio);
+        document.removeEventListener('keydown', unlockAudio);
+        document.removeEventListener('touchstart', unlockAudio);
+    };
+    document.addEventListener('pointerdown', unlockAudio);
+    document.addEventListener('keydown', unlockAudio);
+    document.addEventListener('touchstart', unlockAudio);
+}
+window.addEventListener('load', initBgm);
+
 const CATEGORY_DATA = {
   "숫자·색깔·시간": {
     "Number": ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen"],
@@ -832,6 +1068,8 @@ function showPage(pageId) {
     if(pageId === 'pg-category') {
         initCategoryMenu();
     }
+
+    playBgm(pageId === 'pg-game' ? 'game' : 'intro');
 }
 
 // 1. 메인화면 -> 팀 설정 열기
@@ -857,6 +1095,30 @@ function goBackToSetup() {
 }
 function goBackToCategory() {
     showPage('pg-category');
+}
+
+// 팀 설정/대분류/소분류 화면 공용 '처음으로' 버튼 - 어느 단계에서든 타이틀 화면으로 바로 이동
+function goHomeFromSelection() {
+    showPage('pg-welcome');
+}
+
+// 팀 설정 화면 '앞으로' 버튼 - 하단 '주제 선택하러 가기' 버튼과 동일하게 대분류 화면으로 이동
+function forwardFromSetup() {
+    goToCategoryAfterSetup();
+}
+
+// 대분류 화면 '앞으로' 버튼 - 이미 골랐던 대분류가 있으면 그 소분류 화면으로 다시 이동
+function forwardFromCategory() {
+    if (!selectedCategoryName) {
+        alert("먼저 주제를 선택해 주세요!");
+        return;
+    }
+    selectCategory(selectedCategoryName);
+}
+
+// 소분류 화면 '앞으로' 버튼 - 하단 Game Start 버튼과 동일하게 게임 시작
+function forwardFromSubcategory() {
+    launchGameAfterSelection();
 }
 
 // 대분류 메뉴 렌더링
@@ -1159,8 +1421,8 @@ function renderGroups(){
     const val=groupNames[c.id]||c.def;
     const card=document.createElement('div');
     card.className='group-card';
-    card.style.background=`linear-gradient(135deg,${c.hex}ee,${c.hex}99)`;
-    card.innerHTML=`<label style="font-weight:900;font-size:1.8rem;margin-bottom:10px;color:${c.text};text-shadow:0 1px 3px rgba(0,0,0,.4)">${c.name}</label><input type="text" id="inp-${c.id}" class="group-input" value="${val}">`;
+    card.style.setProperty('--team-c', c.hex);
+    card.innerHTML=`<svg class="car-ico" viewBox="0 0 24 24" fill="${c.hex}"><path d="M5 11l1.5-4A2 2 0 018.4 6h7.2a2 2 0 011.9 1.3L19 11h1a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 11-4 0H9a2 2 0 11-4 0H4a1 1 0 01-1-1v-3a1 1 0 011-1z"/></svg><label style="font-family:'Orbitron',sans-serif;font-weight:800;font-size:1.15rem;letter-spacing:1px;margin-bottom:10px;margin-top:22px;color:${c.hex}">${c.name}</label><input type="text" id="inp-${c.id}" class="group-input" value="${val}">`;
     const inp=card.querySelector('input');
     inp.addEventListener('keydown',e=>{if(e.key==='Enter')inp.blur();});
     groupGrid.appendChild(card);
