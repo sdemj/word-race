@@ -4,7 +4,40 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WORD RACE</title>
+    <link rel="stylesheet" href="vendor/fontawesome/css/all.min.css">
     <style>
+        /* [수정] 상단 네비게이션 버튼: pick the word 게임과 동일한 glass-pill 스타일/아이콘으로 통일 */
+        .glass-pill {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(8px);
+            box-shadow: 0 4px 14px rgba(100, 120, 180, 0.15);
+        }
+        #nav-left-group, #nav-right-group {
+            position: fixed;
+            top: 18px;
+            z-index: 1000000;
+            display: flex;
+            gap: 10px;
+        }
+        #nav-left-group { left: 18px; }
+        #nav-right-group { right: 18px; }
+        .nav-icon-btn {
+            width: 52px;
+            height: 52px;
+            border-radius: 9999px;
+            border: 2px solid rgba(255,255,255,0.85);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 22px;
+            color: #3b3a66;
+            flex-shrink: 0;
+            transition: transform 0.15s ease;
+        }
+        .nav-icon-btn:hover { transform: translateY(-2px); }
+        .nav-icon-btn:disabled { opacity: 0.35; cursor: default; pointer-events: none; transform: none; }
+
         /* Tailwind CDN을 쓰던 자리. 실제로 쓰는 유틸리티 클래스만 로컬로 옮겨서
            외부망이 막힌 학교망에서도 레이아웃이 깨지지 않게 한다. */
         .text-center { text-align: center; }
@@ -819,37 +852,35 @@
      이 트랙은 더 이상 사용하지 않으므로 불필요한 로딩을 막기 위해 preload를 꺼둔다. -->
 <audio id="bgm-game" src="the_mountain-kid-450659.mp3" loop preload="none"></audio>
 
-<!-- [상단 우측 고정 버튼] How to Play / 효과음 On-Off / 배경음악 On-Off / 전체화면, 항상 같은 위치 -->
-<button type="button" id="global-htp-btn" onclick="openHTP(page === 'pg-welcome' ? 'welcome' : 'game')" title="How to Play" style="position:fixed;top:18px;right:204px;z-index:1000000;width:52px;height:52px;border-radius:9999px;border:3px solid #ffffff;background:#fbbf24;box-shadow:0 4px 0 #b45309;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:22px;color:#ffffff;font-weight:900;">
-  ?
-</button>
+<!-- [수정] 상단 네비게이션 - pick the word 게임과 동일한 glass-pill 스타일/아이콘/배치로 통일.
+     왼쪽: Home/Back/Forward(첫 화면 welcome 제외 모든 화면, 항상 같은 위치),
+     오른쪽: How to Play/효과음/배경음악/전체화면(항상 같은 위치) -->
+<div id="nav-left-group">
+  <button type="button" id="game-home-btn" class="glass-pill nav-icon-btn" onclick="exitGameToHome()" title="처음으로">
+    <i class="fa-solid fa-house"></i>
+  </button>
+  <button type="button" id="game-back-btn" class="glass-pill nav-icon-btn" onclick="goBackGlobal()" title="뒤로">
+    <i class="fa-solid fa-play" style="transform:scaleX(-1);"></i>
+  </button>
+  <button type="button" id="game-forward-btn" class="glass-pill nav-icon-btn" onclick="goForwardGlobal()" title="앞으로">
+    <i class="fa-solid fa-play"></i>
+  </button>
+</div>
 
-<button type="button" id="sfx-toggle-btn" onclick="toggleSfx()" title="효과음 켜기/끄기" style="position:fixed;top:18px;right:142px;z-index:1000000;width:52px;height:52px;border-radius:9999px;border:3px solid #ffffff;background:#34d399;box-shadow:0 4px 0 #059669;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:22px;color:#ffffff;">
-  <span id="sfx-toggle-icon">🔔</span>
-</button>
-
-<button type="button" id="music-toggle-btn" onclick="toggleMusic()" title="배경음악 켜기/끄기" style="position:fixed;top:18px;right:80px;z-index:1000000;width:52px;height:52px;border-radius:9999px;border:3px solid #ffffff;background:#93C5FD;box-shadow:0 4px 0 #60A5FA;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:22px;color:#ffffff;">
-  <span id="music-toggle-icon">🎵</span>
-</button>
-
-<button type="button" id="fullscreen-toggle-btn" onclick="toggleFullscreen()" title="전체화면" style="position:fixed;top:18px;right:18px;z-index:1000000;width:52px;height:52px;border-radius:9999px;border:3px solid #ffffff;background:#1E5FC0;box-shadow:0 4px 0 #14428c;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:22px;color:#ffffff;">
-  <span id="fullscreen-toggle-icon">⛶</span>
-</button>
-
-<!-- [상단 좌측 고정 버튼] Home / Back / Forward, 첫 화면(welcome)을 제외한 모든 화면에서 항상 같은 위치.
-     기존에는 화면마다 컨테이너 안쪽에 서로 다른 뒤로/처음으로/앞으로 버튼이 따로 있었는데, 창 비율에 따라
-     이 고정 버튼들과 겹칠 수 있어 하나의 고정 내비게이션으로 통일했다. -->
-<button type="button" id="game-home-btn" onclick="exitGameToHome()" style="display:none;position:fixed;top:18px;left:18px;z-index:1000000;width:52px;height:52px;border-radius:9999px;border:3px solid #ffffff;background:#66bb6a;box-shadow:0 4px 0 #388e3c;align-items:center;justify-content:center;cursor:pointer;font-size:22px;color:#ffffff;" title="처음으로">
-  🏠
-</button>
-
-<button type="button" id="game-back-btn" onclick="goBackGlobal()" style="display:none;position:fixed;top:18px;left:80px;z-index:1000000;width:52px;height:52px;border-radius:9999px;border:3px solid #ffffff;background:#ffb74d;box-shadow:0 4px 0 #f57c00;align-items:center;justify-content:center;cursor:pointer;font-size:22px;color:#ffffff;" title="뒤로">
-  ◀
-</button>
-
-<button type="button" id="game-forward-btn" onclick="goForwardGlobal()" style="display:none;position:fixed;top:18px;left:142px;z-index:1000000;width:52px;height:52px;border-radius:9999px;border:3px solid #ffffff;background:#4fb3d9;box-shadow:0 4px 0 #1a7fa8;align-items:center;justify-content:center;cursor:pointer;font-size:22px;color:#ffffff;" title="앞으로">
-  ▶
-</button>
+<div id="nav-right-group">
+  <button type="button" id="global-htp-btn" class="glass-pill nav-icon-btn" onclick="openHTP(page === 'pg-welcome' ? 'welcome' : 'game')" title="How to Play">
+    <i class="fa-regular fa-circle-question"></i>
+  </button>
+  <button type="button" id="sfx-toggle-btn" class="glass-pill nav-icon-btn" onclick="toggleSfx()" title="효과음 켜기/끄기">
+    <i class="fa-solid fa-bell" id="sfx-toggle-icon"></i>
+  </button>
+  <button type="button" id="music-toggle-btn" class="glass-pill nav-icon-btn" onclick="toggleMusic()" title="배경음악 켜기/끄기">
+    <i class="fa-solid fa-music" id="music-toggle-icon"></i>
+  </button>
+  <button type="button" id="fullscreen-toggle-btn" class="glass-pill nav-icon-btn" onclick="toggleFullscreen()" title="전체화면">
+    <i class="fa-solid fa-expand" id="fullscreen-toggle-icon"></i>
+  </button>
+</div>
 
 <div class="game-container">
     <div id="confettiLayer" class="confetti-layer"></div>
@@ -1034,7 +1065,7 @@ function syncBgmAudio() {
 
 function updateMusicIcon() {
     const icon = document.getElementById('music-toggle-icon');
-    if (icon) icon.textContent = bgmMuted ? '🔇' : '🎵';
+    if (icon) icon.className = bgmMuted ? 'fa-solid fa-volume-xmark' : 'fa-solid fa-music';
 }
 
 function applyBgmState() {
@@ -1080,7 +1111,7 @@ let sfxMuted = false;
 try { sfxMuted = localStorage.getItem('wordrace_sfx_muted') === '1'; } catch(e) {}
 function updateSfxIcon() {
     const icon = document.getElementById('sfx-toggle-icon');
-    if (icon) icon.textContent = sfxMuted ? '🔕' : '🔔';
+    if (icon) icon.className = sfxMuted ? 'fa-solid fa-bell-slash' : 'fa-solid fa-bell';
 }
 function toggleSfx() {
     sfxMuted = !sfxMuted;
@@ -1109,7 +1140,7 @@ function toggleFullscreen() {
 }
 function updateFullscreenIcon() {
     const icon = document.getElementById('fullscreen-toggle-icon');
-    if (icon) icon.textContent = getFullscreenElement() ? '❐' : '⛶';
+    if (icon) icon.className = getFullscreenElement() ? 'fa-solid fa-compress' : 'fa-solid fa-expand';
 }
 document.addEventListener('fullscreenchange', updateFullscreenIcon);
 document.addEventListener('webkitfullscreenchange', updateFullscreenIcon);
@@ -1232,17 +1263,11 @@ function showPage(pageId) {
     const htpBtn = document.getElementById('htpBtn');
     if(htpBtn) htpBtn.style.display = (pageId === 'pg-setup' || pageId === 'pg-game') ? 'block' : 'none';
 
-    // 상단 좌측 고정 Home/Back/Forward 버튼: 첫 화면(welcome)에서는 숨기고, 그 외 모든 화면에서
-    // 항상 같은 위치에 표시한다(Forward는 실제 게임 화면에는 해당 개념이 없으므로 숨김).
-    const gameBackBtn = document.getElementById('game-back-btn');
-    const gameHomeBtn = document.getElementById('game-home-btn');
-    const gameForwardBtn = document.getElementById('game-forward-btn');
-    const notWelcome = (pageId !== 'pg-welcome');
-    if(gameBackBtn) gameBackBtn.style.display = notWelcome ? 'flex' : 'none';
-    if(gameHomeBtn) gameHomeBtn.style.display = notWelcome ? 'flex' : 'none';
-    if(gameForwardBtn) gameForwardBtn.style.display = (notWelcome && pageId !== 'pg-game') ? 'flex' : 'none';
-
     page = pageId;
+
+    // 상단 좌측 고정 Home/Back/Forward 버튼: pick the word와 동일하게 항상 표시하되,
+    // 해당 화면에서 의미가 없는 버튼만 흐리게 비활성화한다(완전히 숨기지 않음).
+    updateNavButtonStates();
 
     if(pageId === 'pg-category') {
         initCategoryMenu();
@@ -1309,9 +1334,25 @@ function goBackGlobal() {
     else if (page === 'pg-game') exitGameToSubcategory();
 }
 function goForwardGlobal() {
-    if (page === 'pg-setup') forwardFromSetup();
+    if (page === 'pg-welcome') goToSetupFirst();
+    else if (page === 'pg-setup') forwardFromSetup();
     else if (page === 'pg-category') forwardFromCategory();
     else if (page === 'pg-subcategory') forwardFromSubcategory();
+}
+
+// [추가] 상단 고정 Home/Back/Forward 버튼 - pick the word와 동일하게 완전히 숨기지 않고,
+// 해당 화면에서 의미가 없는 버튼만 흐리게 비활성화한다.
+function updateNavButtonStates() {
+    const isWelcome = (page === 'pg-welcome');
+    const isGame = (page === 'pg-game');
+    const backBtn = document.getElementById('game-back-btn');
+    const homeBtn = document.getElementById('game-home-btn');
+    const fwdBtn = document.getElementById('game-forward-btn');
+    [backBtn, homeBtn].forEach(btn => {
+        if (!btn) return;
+        btn.disabled = isWelcome;
+    });
+    if (fwdBtn) fwdBtn.disabled = isGame;
 }
 
 // 대분류 메뉴 렌더링
