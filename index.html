@@ -555,8 +555,39 @@
 
         #pg-subcategory .cta-race-btn {
             align-self: center;
+            font-size: 1.6rem;
+            padding: 16px 56px;
+            text-transform: none;
+        }
+
+        /* 소주제 화면 전용 확대: 소주제는 카테고리마다 항상 정확히 3개(CATEGORY_DATA 참고)뿐이라
+           대분류 화면(9개, 3x3)과 같은 .grid-menu/.menu-box-btn 크기를 쓰면 화면 가운데에
+           작게 몰려 보인다. 대분류 화면(3줄)까지 커지면 세로로 넘칠 수 있어 여기서만 덮어쓴다. */
+        #pg-subcategory .selection-heading {
+            font-size: 3rem;
+        }
+        #pg-subcategory .grid-menu {
+            grid-template-columns: repeat(3, 320px);
+            gap: 28px;
+            margin-bottom: 28px;
+        }
+        #pg-subcategory .menu-box-btn {
+            width: 300px;
+            height: 160px;
+            font-size: 1.6rem;
+        }
+        #pg-subcategory .menu-box-btn span {
             font-size: 1.1rem;
-            padding: 10px 32px;
+        }
+        #pg-subcategory .menu-box-btn.full-width {
+            width: 1016px;
+            max-width: 1016px;
+            height: 84px;
+            font-size: 1.4rem;
+        }
+        #pg-subcategory .status-counter {
+            font-size: 1.6rem;
+            padding: 8px 28px;
         }
 
         #pg-setup .back-btn, #pg-category .back-btn, #pg-subcategory .back-btn {
@@ -736,7 +767,7 @@
             z-index: 20;
             display: grid;
             place-items: center;
-            background: rgba(18,26,46,.5);
+            background: rgba(18,26,46,.94);
             backdrop-filter: blur(2px);
             border-radius: 26px;
         }
@@ -921,7 +952,7 @@
         <div id="all-btn-area" style="width: 100%; display: flex; justify-content: center; margin-bottom: 5px;"></div>
         <div class="grid-menu" id="subcategory-menu-grid"></div>
         <div class="status-counter" id="live-word-counter">0단어 선택됨</div>
-        <button class="cta-race-btn" onclick="launchGameAfterSelection()">GAME START</button>
+        <button class="cta-race-btn" onclick="launchGameAfterSelection()">Game Start</button>
     </div>
 
 <div id="pg-game" class="page" style="justify-content: flex-start;">
@@ -1020,11 +1051,11 @@
     </div>
 
     <div id="htpModal" class="modal-wrap">
-      <div class="modal-box" style="max-width: 760px; text-align: left; padding: 40px; position: relative;">
-        <button onclick="closeHTP()" style="position:absolute; top:20px; right:20px; font-size: 1.5rem; cursor:pointer; background:none; border:none;">✕</button>
-        <h2 style="font-size: 2rem; font-weight: 900; margin-bottom: 10px; color: #1e293b; text-align: center;">How to Play</h2>
-        <p style="text-align: center; font-weight: 700; color: #1e5fc0; font-size: 1.15rem; margin: 0 0 20px; white-space: nowrap;">학습목표: Word Race 게임을 하며 단어를 빠르고 정확하게 읽어 봅시다.</p>
-        <div style="font-size: 1.2rem; color: #334155; line-height: 1.8;">
+      <div class="modal-box" style="max-width: 760px; text-align: left; padding: 26px 40px; position: relative;">
+        <button onclick="closeHTP()" style="position:absolute; top:14px; right:20px; font-size: 1.5rem; cursor:pointer; background:none; border:none;">✕</button>
+        <h2 style="font-size: 1.7rem; font-weight: 900; margin-bottom: 6px; color: #1e293b; text-align: center;">How to Play</h2>
+        <p style="text-align: center; font-weight: 700; color: #1e5fc0; font-size: 1.05rem; margin: 0 0 12px; white-space: nowrap;">학습목표: Word Race 게임을 하며 단어를 빠르고 정확하게 읽어 봅시다.</p>
+        <div style="font-size: 1.05rem; color: #334155; line-height: 1.5;">
           <p><strong>1.</strong> '팀 설정하기'에서 팀 수, 팀 색깔, 팀 이름을 정합니다.</p>
           <p><strong>2.</strong> 배우고 싶은 주제를 고른 다음, 그 안에서 하고 싶은 소주제를 하나 이상 골라요.</p>
           <p class="hanging-indent"><strong>3.</strong> 화면에 우리 팀 색깔이 나오면 자리에서 일어나, 팀원들과 동시에 단어를 소리 내어 읽습니다.</p>
@@ -1032,14 +1063,14 @@
           <p class="hanging-indent"><strong>5.</strong> 이전 라운드보다 기록을 단축시켜야 다음 라운드(총 5라운드)를 도전할 수 있습니다.</p>
           <p><strong>6.</strong> 5라운드까지 성공하면 Word Race 완주 성공!</p>
           <p class="hanging-indent"><strong>7.</strong> 키보드의 스페이스바 대신, 화면 속 [👆 SPACE] 버튼을 눌러서 진행할 수도 있어요.</p>
-          <div style="margin-top: 25px; padding: 20px; background: #f1f5f9; border-radius: 12px; border-left: 5px solid #cbd5e1;">
+          <div style="margin-top: 14px; padding: 12px 16px; background: #f1f5f9; border-radius: 12px; border-left: 5px solid #cbd5e1;">
             <p style="margin: 0; font-weight: 800; color: #dc2626;">⚠️ 주의사항</p>
-            <p style="margin: 5px 0 0 0; color: #1e293b;">- 팀원 모두 정확하게 단어를 읽어요.</p>
+            <p style="margin: 4px 0 0 0; color: #1e293b;">- 팀원 모두 정확하게 단어를 읽어요.</p>
             <p style="margin: 0; color: #1e293b;">- 다른 팀 색깔의 단어를 읽지 마세요.</p>
           </div>
         </div>
-        <div id="htp-gamestart-wrap" style="display:none; margin-top: 25px; text-align: center;">
-          <button class="start-btn" onclick="startFromHTP()" style="padding: 14px 45px; font-size: 1.3rem;">GAME START</button>
+        <div id="htp-gamestart-wrap" style="display:none; margin-top: 14px; text-align: center;">
+          <button class="start-btn" onclick="startFromHTP()" style="padding: 10px 40px; font-size: 1.2rem;">Game Start</button>
         </div>
       </div>
     </div>
@@ -1239,20 +1270,40 @@ startBtn = document.getElementById('startBtn');
 countEl = document.getElementById('count');
 startRoundLabel = document.getElementById('startRoundLabel');
 
+// 우클릭 컨텍스트 메뉴 차단 (게임 화면 전체)
+document.addEventListener('contextmenu', e => e.preventDefault());
+
+// 팝업 닫는 방법 다양화: 배경(어두운 바깥 영역) 클릭 / ESC 키로도 닫히게 한다.
+// how-to-play 팝업은 기존 closeHTP()를 그대로 써서 타이머 일시정지 해제까지 같이 처리한다.
+function closeModalWrap(wrap) {
+    if (!wrap || !wrap.classList.contains('active')) return;
+    if (wrap === htpModal) { closeHTP(); return; }
+    wrap.classList.remove('active');
+}
+document.querySelectorAll('.modal-wrap').forEach(wrap => {
+    wrap.addEventListener('click', e => {
+        if (e.target === wrap) closeModalWrap(wrap);
+    });
+});
+window.addEventListener('keydown', e => {
+    if (e.key !== 'Escape') return;
+    document.querySelectorAll('.modal-wrap.active').forEach(closeModalWrap);
+});
+
 function showPage(pageId) {
+    // Home/뒤로/앞으로를 포함해 화면이 바뀌는 모든 경로가 이 함수를 거치므로,
+    // 어느 화면에서 어떤 팝업(도움말/라운드 결과/기록)이 떠 있었든 화면 전환 시 항상 같이 닫는다.
+    document.querySelectorAll('.modal-wrap.active').forEach(w => w.classList.remove('active'));
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     const target = document.getElementById(pageId);
     if(target) target.classList.add('active');
     
     const container = document.querySelector('.game-container');
     if (pageId === 'pg-welcome') {
-        container.style.backgroundImage = "url('0.png')";
-        container.style.background = 'none';
+        container.style.background = "url('0.png') center / 100% 100% no-repeat";
     } else if (pageId === 'pg-game') {
-        container.style.backgroundImage = 'none';
         container.style.background = 'linear-gradient(180deg, #77C6F2, #9AD8FA 40%, #C9EAFC)';
     } else {
-        container.style.backgroundImage = 'none';
         container.style.background = 'linear-gradient(180deg, #77C6F2, #9AD8FA 40%, #C9EAFC)';
     }
     
