@@ -392,13 +392,13 @@
         }
         .mbtn:hover { transform: scale(1.05); }
         .mbtn-exit { background: #64748b; color: #fff; }
-        .mbtn-next { background: #ff6b00; color: #fff; }
+        .mbtn-next { background: #22c55e; color: #fff; border: 3px solid #15803d; }
         .mbtn-retry { background: #ef4444; color: #fff; }
         
-        .group-card { position:relative; overflow:visible; border-radius:18px; padding:44px 14px 16px; display:flex; flex-direction:column; align-items:center; background: linear-gradient(180deg, #ffffff, #f1f5f9); border:3px solid var(--team-c, #facc15); box-shadow: 0 8px 18px rgba(31,58,110,0.18); transition: transform 0.15s ease; }
+        .group-card { position:relative; overflow:visible; border-radius:18px; padding:46px 14px 20px; display:flex; flex-direction:column; align-items:center; background: linear-gradient(180deg, #ffffff, #f1f5f9); border:3px solid var(--team-c, #facc15); box-shadow: 0 8px 18px rgba(31,58,110,0.18); transition: transform 0.15s ease; }
         .group-card::before { content:''; position:absolute; bottom:0; left:0; right:0; height:8px; background: repeating-linear-gradient(90deg, #1e293b 0 8px, #f8fafc 8px 16px); border-radius:0 0 14px 14px; }
         .group-card:hover { transform: translateY(-4px); }
-        .group-card .car-ico { width:88px; height:88px; position:absolute; top:-30px; left:50%; transform: translateX(-50%); filter: drop-shadow(0 6px 6px rgba(0,0,0,.3)); }
+        .group-card .car-ico { width:64px; height:64px; position:absolute; top:-20px; left:50%; transform: translateX(-50%); filter: drop-shadow(0 6px 6px rgba(0,0,0,.3)); }
         .group-input { width:100%; text-align:center; padding:9px; border-radius:8px; font-family: var(--f-cute); font-weight:700; background:#f8fafc; color:#334155; border:2px solid var(--team-c, #cbd5e1); letter-spacing:.5px; }
         .btn-cnt { width:44px; height:44px; border-radius:50%; font-family: var(--f-cute); font-size:1.5rem; font-weight:700; background: linear-gradient(180deg, #DBEAFE, #93C5FD); color:#1E5FC0; border:3px solid #fff; box-shadow: 0 4px 0 #60A5FA, 0 6px 12px rgba(30,64,175,0.2); cursor:pointer; display:flex; align-items:center; justify-content:center; transition: transform 0.18s cubic-bezier(.34,1.56,.64,1), box-shadow 0.18s ease; }
         .btn-cnt:hover { transform: translateY(-3px) scale(1.1) rotate(-6deg); }
@@ -542,7 +542,7 @@
             background: repeating-linear-gradient(135deg, #facc15 0 14px, #fde047 14px 28px);
             border: 4px solid #ffffff;
             border-radius: var(--r-pill);
-            padding: 16px 46px;
+            padding: 12px 46px;
             box-shadow: 0 6px 0 #d97706, 0 10px 20px rgba(217,119,6,0.3);
             display: inline-flex;
             align-items: center;
@@ -892,11 +892,10 @@
         </div>
     </div>
 
-    <div id="pg-setup" class="page" style="padding-top: 20px; padding-bottom: 20px;">
-        <div class="text-center mt-2 mb-2" style="position:relative; z-index:1; padding-top:30px;">
-            <h2 class="text-5xl mb-3 race-heading">팀 설정하기</h2>
-            <p class="text-2xl font-medium race-subtext">아래에서 팀 수, 팀 색깔, 팀 이름을 정해 주세요.</p>
-            <p class="font-medium race-subtext" style="font-size:1.05rem; opacity:.85; margin-top:4px;">팀 이름은 최대 8글자까지 쓸 수 있어요.</p>
+    <div id="pg-setup" class="page" style="padding-top: 10px; padding-bottom: 10px;">
+        <div class="text-center" style="position:relative; z-index:1; padding-top:10px;">
+            <h2 class="text-5xl mb-2 race-heading">팀 설정하기</h2>
+            <p class="text-2xl font-medium race-subtext">팀 수, 팀 색깔, 팀 이름(최대 8글자)을 정해주세요.</p>
         </div>
         <div class="w-full flex flex-col items-center gap-3" style="position:relative; z-index:1;">
             <div class="count-panel">
@@ -905,8 +904,8 @@
                 <span id="countDisp" class="font-black text-2xl">6</span>
                 <button class="btn-cnt" onclick="chgCount(1)">+</button>
             </div>
-            <div id="groupGrid" class="grid grid-cols-3 gap-3 w-full max-w-[980px]" style="margin-top:32px;"></div>
-            <button onclick="goToCategoryAfterSetup()" class="cta-race-btn mt-2">
+            <div id="groupGrid" class="grid grid-cols-3 gap-3 w-full max-w-[980px]" style="margin-top:10px;"></div>
+            <button onclick="goToCategoryAfterSetup()" class="cta-race-btn" style="margin-top:8px;">
                 주제 선택하러 가기
             </button>
         </div>
@@ -1735,7 +1734,7 @@ function renderGroups(){
     const card=document.createElement('div');
     card.className='group-card';
     card.style.setProperty('--team-c', c.hex);
-    card.innerHTML=`<svg class="car-ico" viewBox="0 0 24 24" fill="${c.hex}"><path d="M5 11l1.5-4A2 2 0 018.4 6h7.2a2 2 0 011.9 1.3L19 11h1a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 11-4 0H9a2 2 0 11-4 0H4a1 1 0 01-1-1v-3a1 1 0 011-1z"/></svg><label style="font-family:var(--f-num);font-weight:800;font-size:1.5rem;letter-spacing:1px;margin-bottom:10px;margin-top:22px;color:${c.hex}">${c.name}</label><input type="text" id="inp-${c.id}" class="group-input" value="${val}" maxlength="8">`;
+    card.innerHTML=`<svg class="car-ico" viewBox="0 0 24 24" fill="${c.hex}"><path d="M5 11l1.5-4A2 2 0 018.4 6h7.2a2 2 0 011.9 1.3L19 11h1a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 11-4 0H9a2 2 0 11-4 0H4a1 1 0 01-1-1v-3a1 1 0 011-1z"/></svg><label style="font-family:var(--f-num);font-weight:800;font-size:1.5rem;letter-spacing:1px;margin-bottom:6px;margin-top:10px;color:${c.hex}">${c.name}</label><input type="text" id="inp-${c.id}" class="group-input" value="${val}" maxlength="8">`;
     const inp=card.querySelector('input');
     inp.addEventListener('keydown',e=>{if(e.key==='Enter')inp.blur();});
     inp.addEventListener('focus',()=>{if(inp.value===c.def)inp.value='';});
@@ -1855,6 +1854,7 @@ function showResult(dur) {
         }
         // 성공 팝업: 기존 회색 텍스트는 흰 배경에서 대비가 낮아 읽기 어려웠으므로 뚜렷한 초록으로 변경
         resMsg.style.color = '#15803d';
+        resTime.style.color = '#15803d';
         resBox.classList.remove('fail');
         resBox.classList.add('success-flash');
         nextBtn.classList.add('visible');
@@ -1867,6 +1867,7 @@ function showResult(dur) {
         resBox.classList.add('fail');
         nextBtn.classList.remove('visible');
 
+        resTime.style.color = '#b91c1c';
         if (failStreak > MAX_ROUND_RETRIES) {
             // 재도전 횟수(3회) 초과: 더 이상 재도전을 제공하지 않고 격려 메시지와 종료 버튼만 표시
             resMsg.textContent = '조금 더 연습해보세요!';
