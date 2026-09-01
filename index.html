@@ -1069,7 +1069,8 @@
             <p style="margin: 0; color: #1e293b;">- 다른 팀 색깔의 단어를 읽지 마세요.</p>
           </div>
         </div>
-        <div id="htp-gamestart-wrap" style="display:none; margin-top: 14px; text-align: center;">
+        <div id="htp-gamestart-wrap" style="display:none; margin-top: 14px; text-align: center; gap: 12px; justify-content: center; align-items: center;">
+          <button class="start-btn" onclick="closeHTP()" style="padding: 10px 40px; font-size: 1.2rem; background: #94a3b8; box-shadow: 0 6px 0 #64748b, 0 10px 18px rgba(100,116,139,0.3);">닫기</button>
           <button class="start-btn" onclick="startFromHTP()" style="padding: 10px 40px; font-size: 1.2rem;">Game Start</button>
         </div>
       </div>
@@ -1086,7 +1087,10 @@ const bgmIntro = document.getElementById('bgm-intro');
 let bgmMuted = false;
 try { bgmMuted = localStorage.getItem('wordrace_bgm_muted') === '1'; } catch(e) {}
 let audioUnlocked = false;
-let bgmActive = false; // 현재 화면이 배경음악을 틀어도 되는 화면인지(true) / 실제 게임 화면인지(false)
+// 첫 화면(pg-welcome)은 HTML에 이미 active 클래스가 박혀 있어 showPage()를 거치지 않고 바로 표시되므로,
+// 초기값을 false로 두면 첫 화면에서는 배경음악이 재생되지 않는 문제가 있었다. pg-welcome도 배경음악이
+// 나와야 하는 화면이므로 true로 시작한다(이후 게임 화면 진입 시 showPage()가 false로 바꿔준다).
+let bgmActive = true; // 현재 화면이 배경음악을 틀어도 되는 화면인지(true) / 실제 게임 화면인지(false)
 
 function syncBgmAudio() {
     if (!bgmIntro) return;
@@ -1982,7 +1986,7 @@ function openHTP(source) {
         timerOn = false;
     }
     document.getElementById('htpModal').classList.add('active');
-    document.getElementById('htp-gamestart-wrap').style.display = (htpSource === 'welcome') ? 'block' : 'none';
+    document.getElementById('htp-gamestart-wrap').style.display = (htpSource === 'welcome') ? 'flex' : 'none';
 }
 
 function closeHTP() {
