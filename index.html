@@ -19,8 +19,8 @@
             display: flex;
             gap: 10px;
         }
-        #nav-left-group { left: 18px; }
-        #nav-right-group { right: 18px; }
+        #nav-left-group { left: 18px; transform-origin: top left; }
+        #nav-right-group { right: 18px; transform-origin: top right; }
         .nav-icon-btn {
             width: 52px;
             height: 52px;
@@ -382,7 +382,15 @@
             100% { box-shadow: 0 20px 25px rgba(0,0,0,0.2), 0 0 0 0 rgba(34,197,94,0); }
         }
         .modal-box h2 { font-size: 2.2rem; font-weight: 900; color: #1e293b; margin-bottom: 10px; letter-spacing: -1px}
-        .modal-time { 
+        /* [추가] 라운드 성공/실패 결과 팝업에 성공/실패를 나타내는 캐릭터 이미지 표시 */
+        .res-char-img {
+            width: 110px;
+            height: auto;
+            margin: 0 auto 10px;
+            display: block;
+            filter: drop-shadow(0 6px 10px rgba(0,0,0,0.15));
+        }
+        .modal-time {
             font-family: var(--f-num); font-size: 3.5rem;
             font-weight: 900; color: #ff6b00; 
         }
@@ -1025,6 +1033,7 @@
 
     <div id="resModal" class="modal-wrap">
       <div id="resBox" class="modal-box">
+        <img id="resCharImg" class="res-char-img" src="" alt="" hidden>
         <div style="color:#94a3b8;font-weight:700;font-size:1.1rem;letter-spacing:2px;text-transform:uppercase">이번 라운드 기록</div>
         <div id="resTime" class="modal-time">00.00초</div>
         <div id="resMsg" style="font-size:1.1rem;font-weight:700;color:#cbd5e1"></div>
@@ -1086,8 +1095,12 @@
 // 첫 화면에서 꺼두면 게임 화면으로 넘어가도 계속 꺼진 채로 유지되도록 한다.
 const bgmIntro = document.getElementById('bgm-intro');
 const bgmGame = document.getElementById('bgm-game');
-let bgmMuted = false;
+let bgmMuted = false; // 인트로~선택 화면 트랙의 음소거 상태 (localStorage에 저장, 기본 on)
 try { bgmMuted = localStorage.getItem('wordrace_bgm_muted') === '1'; } catch(e) {}
+// [추가] 실제 게임(읽기) 화면 트랙은 학생이 소리 내어 읽는 활동에 방해되지 않도록 매번
+// 꺼진 채로 시작한다(기본 off). 인트로~선택 화면의 저장된 선호도(bgmMuted)와는 별개로
+// 관리해서, 게임 화면을 들락거려도 인트로 쪽 기본값(on)에는 영향을 주지 않는다.
+let gameBgmMuted = true;
 let audioUnlocked = false;
 // 첫 화면(pg-welcome)은 HTML에 이미 active 클래스가 박혀 있어 showPage()를 거치지 않고 바로 표시되므로,
 // 초기값을 false로 두면 첫 화면에서는 배경음악이 재생되지 않는 문제가 있었다. pg-welcome도 배경음악이
@@ -1103,28 +1116,38 @@ function syncBgmAudio() {
 
 function updateMusicIcon() {
     const icon = document.getElementById('music-toggle-icon');
-    if (icon) icon.className = bgmMuted ? 'fa-solid fa-volume-xmark' : 'fa-solid fa-music';
+    const muted = currentBgmKey === 'game' ? gameBgmMuted : bgmMuted;
+    if (icon) icon.className = muted ? 'fa-solid fa-volume-xmark' : 'fa-solid fa-music';
 }
 
 function applyBgmState() {
     const active = currentBgmKey === 'game' ? bgmGame : bgmIntro;
     const inactive = currentBgmKey === 'game' ? bgmIntro : bgmGame;
+    const muted = currentBgmKey === 'game' ? gameBgmMuted : bgmMuted;
     if (inactive && !inactive.paused) inactive.pause();
     if (!active) return;
-    if (bgmMuted) { active.pause(); return; }
+    if (muted) { active.pause(); return; }
     syncBgmAudio();
     if (active.paused) active.play().catch(() => {});
 }
 
 // key: 'intro' (인트로/설정 화면 트랙) / 'game' (실제 게임 화면 트랙 - the_mountain-kid)
 function playBgm(key) {
-    currentBgmKey = (key === 'game') ? 'game' : 'intro';
+    const newKey = (key === 'game') ? 'game' : 'intro';
+    // 게임 화면에 새로 들어올 때마다 항상 꺼진 상태로 시작한다
+    if (newKey === 'game' && currentBgmKey !== 'game') gameBgmMuted = true;
+    currentBgmKey = newKey;
     applyBgmState();
+    updateMusicIcon();
 }
 
 function toggleMusic() {
-    bgmMuted = !bgmMuted;
-    try { localStorage.setItem('wordrace_bgm_muted', bgmMuted ? '1' : '0'); } catch(e) {}
+    if (currentBgmKey === 'game') {
+        gameBgmMuted = !gameBgmMuted;
+    } else {
+        bgmMuted = !bgmMuted;
+        try { localStorage.setItem('wordrace_bgm_muted', bgmMuted ? '1' : '0'); } catch(e) {}
+    }
     applyBgmState();
     updateMusicIcon();
 }
@@ -1271,6 +1294,7 @@ const resBox = document.getElementById('resBox');
 const resTime = document.getElementById('resTime');
 const resMsg = document.getElementById('resMsg');
 const resBtns = document.getElementById('resBtns');
+const resCharImg = document.getElementById('resCharImg');
 const repModal = document.getElementById('repModal');
 const repBody = document.getElementById('repBody');
 const dashboard = document.getElementById('dashboard');
@@ -1292,14 +1316,18 @@ function closeModalWrap(wrap) {
     if (wrap === htpModal) { closeHTP(); return; }
     wrap.classList.remove('active');
 }
-document.querySelectorAll('.modal-wrap').forEach(wrap => {
+// [수정] 라운드 성공/실패 결과 팝업(resModal)은 배경 클릭/ESC로 그냥 닫히면 안 된다 -
+// 다음 라운드로 넘어가는 로직이 팝업의 버튼 클릭에 걸려 있어서, 버튼을 안 누르고 배경만
+// 닫으면 다음 라운드로 넘어가지 못한 채 게임이 멈춘 것처럼 보인다. resModal은 반드시
+// 팝업 안의 버튼으로만 닫히도록 제외한다.
+document.querySelectorAll('.modal-wrap:not(#resModal)').forEach(wrap => {
     wrap.addEventListener('click', e => {
         if (e.target === wrap) closeModalWrap(wrap);
     });
 });
 window.addEventListener('keydown', e => {
     if (e.key !== 'Escape') return;
-    document.querySelectorAll('.modal-wrap.active').forEach(closeModalWrap);
+    document.querySelectorAll('.modal-wrap.active:not(#resModal)').forEach(closeModalWrap);
 });
 
 function showPage(pageId) {
@@ -1638,7 +1666,7 @@ function playWelcomeSound(){
       const o=c.createOscillator(),g=c.createGain();
       o.type=i===notes.length-1?'sawtooth':'triangle'; o.frequency.setValueAtTime(f,now+t);
       if(i===notes.length-1) o.frequency.exponentialRampToValueAtTime(880,now+t+durs[i]);
-      g.gain.setValueAtTime(.18,now+t); g.gain.exponentialRampToValueAtTime(.01,now+t+durs[i]);
+      g.gain.setValueAtTime(.34,now+t); g.gain.exponentialRampToValueAtTime(.01,now+t+durs[i]);
       o.connect(g); g.connect(c.destination); o.start(now+t); o.stop(now+t+durs[i]); t+=durs[i]-.02
     });
   } catch(e){}
@@ -1660,7 +1688,7 @@ function playCountdownSound(label){
     if (label === 'GO!') {
       osc.type = 'triangle';
       osc.frequency.setValueAtTime(920, now);
-      gain.gain.exponentialRampToValueAtTime(0.32, now + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.55, now + 0.02);
       gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.24);
       osc.start(now);
       osc.stop(now + 0.24);
@@ -1668,7 +1696,7 @@ function playCountdownSound(label){
       osc.type = 'sine';
       const pitch = 520 - (Number(label) - 1) * 40;
       osc.frequency.setValueAtTime(pitch, now);
-      gain.gain.exponentialRampToValueAtTime(0.3, now + 0.04);
+      gain.gain.exponentialRampToValueAtTime(0.5, now + 0.04);
       gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.18);
       osc.start(now);
       osc.stop(now + 0.18);
@@ -1712,7 +1740,7 @@ function playSuccess(){
     const c=new A(),now=c.currentTime;
     [440, 554, 659, 880].forEach((f, i) => {
       const o=c.createOscillator(),g=c.createGain(); o.type='sine'; o.frequency.setValueAtTime(f, now + i*0.15);
-      g.gain.setValueAtTime(0.38, now + i*0.15); g.gain.exponentialRampToValueAtTime(0.01, now + i*0.15 + 0.3);
+      g.gain.setValueAtTime(0.55, now + i*0.15); g.gain.exponentialRampToValueAtTime(0.01, now + i*0.15 + 0.3);
       o.connect(g); g.connect(c.destination); o.start(now + i*0.15); o.stop(now + i*0.15 + 0.3);
     });
   }catch(e){}
@@ -1726,7 +1754,7 @@ function playFail(){
     const c=new A(),now=c.currentTime;
     [392, 349, 293].forEach((f, i) => {
       const o=c.createOscillator(),g=c.createGain(); o.type='sawtooth'; o.frequency.setValueAtTime(f, now + i*0.14);
-      g.gain.setValueAtTime(0.16, now + i*0.14); g.gain.exponentialRampToValueAtTime(0.01, now + i*0.14 + 0.26);
+      g.gain.setValueAtTime(0.32, now + i*0.14); g.gain.exponentialRampToValueAtTime(0.01, now + i*0.14 + 0.26);
       o.connect(g); g.connect(c.destination); o.start(now + i*0.14); o.stop(now + i*0.14 + 0.26);
     });
   }catch(e){}
@@ -1740,7 +1768,7 @@ function playRaceComplete(){
     const c=new A(),now=c.currentTime;
     [523, 659, 784, 1047, 784, 1047].forEach((f, i) => {
       const o=c.createOscillator(),g=c.createGain(); o.type= i%2===0 ? 'triangle' : 'square'; o.frequency.setValueAtTime(f, now + i*0.13);
-      g.gain.setValueAtTime(0.22, now + i*0.13); g.gain.exponentialRampToValueAtTime(0.01, now + i*0.13 + 0.35);
+      g.gain.setValueAtTime(0.4, now + i*0.13); g.gain.exponentialRampToValueAtTime(0.01, now + i*0.13 + 0.35);
       o.connect(g); g.connect(c.destination); o.start(now + i*0.13); o.stop(now + i*0.13 + 0.35);
     });
   }catch(e){}
@@ -1799,6 +1827,10 @@ function renderGroups(){
     inp.addEventListener('keydown',e=>{if(e.key==='Enter')inp.blur();});
     inp.addEventListener('focus',()=>{if(inp.value===c.def)inp.value='';});
     inp.addEventListener('blur',()=>{if(!inp.value.trim())inp.value=c.def;});
+    // [수정] 한글은 IME 조합 중에는 브라우저가 maxlength를 바로 적용하지 않아 8자를 넘겨
+    // 입력할 수 있었다(다른 곳을 클릭해야 saveNames()의 slice(0,8)로 뒤늦게 잘림). 입력
+    // 즉시 8자로 잘라 타이핑하는 동안에도 넘어가지 않게 한다.
+    inp.addEventListener('input',()=>{if(inp.value.length>8)inp.value=inp.value.slice(0,8);});
     groupGrid.appendChild(card);
   });
 }
@@ -1919,6 +1951,9 @@ function showResult(dur) {
         resTime.style.color = '#15803d';
         resBox.classList.remove('fail');
         resBox.classList.add('success-flash');
+        resCharImg.src = 's.png';
+        resCharImg.alt = '라운드 성공';
+        resCharImg.hidden = false;
         nextBtn.classList.add('visible');
         playSuccess();
         spawnConfetti(45);
@@ -1927,6 +1962,9 @@ function showResult(dur) {
         failStreak++;
         resBox.classList.remove('success-flash');
         resBox.classList.add('fail');
+        resCharImg.src = 'f.png';
+        resCharImg.alt = '라운드 실패';
+        resCharImg.hidden = false;
         nextBtn.classList.remove('visible');
 
         resTime.style.color = '#b91c1c';
@@ -2085,10 +2123,22 @@ function resizeGame() {
         if (maxScaleByNav > 0) scale = Math.min(scale, maxScaleByNav);
     }
 
+    // 화면이 좁아지면(모바일 등) 좌/우 네비 버튼 그룹이 화면 가운데서 서로 겹치므로,
+    // 폭이 충분할 때(520px 이상)는 100%, 좁아질수록 최대 65%까지 함께 줄어들도록 축소한다.
+    // (pick the word / WordCatch300과 동일한 방식)
+    const navScale = Math.max(0.65, Math.min(1, winW / 520));
+    const navLeft = document.getElementById('nav-left-group');
+    const navRight = document.getElementById('nav-right-group');
+    if (navLeft) navLeft.style.transform = `scale(${navScale})`;
+    if (navRight) navRight.style.transform = `scale(${navScale})`;
+
     container.style.transform = `translate(-50%, -50%) scale(${scale})`;
 }
 window.addEventListener('resize', resizeGame);
+window.addEventListener('load', resizeGame);
 resizeGame();
+// 모바일 기기 등 뷰포트 치수가 로드 직후에는 아직 안정되지 않은 경우를 대비해 0.1초 뒤 한 번 더 실행
+setTimeout(resizeGame, 100);
 </script>
 </body>
 </html>
