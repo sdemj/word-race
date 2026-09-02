@@ -896,7 +896,7 @@
      왼쪽: Home/Back/Forward(첫 화면 welcome 제외 모든 화면, 항상 같은 위치),
      오른쪽: How to Play/효과음/배경음악/전체화면(항상 같은 위치) -->
 <div id="nav-left-group">
-  <button type="button" id="game-home-btn" class="glass-pill nav-icon-btn" onclick="exitGameToHome()" title="처음으로">
+  <button type="button" id="game-home-btn" class="glass-pill nav-icon-btn" onclick="homeButtonClicked()" title="처음으로">
     <i class="fa-solid fa-house"></i>
   </button>
   <button type="button" id="game-back-btn" class="glass-pill nav-icon-btn" onclick="goBackGlobal()" title="뒤로">
@@ -1082,6 +1082,19 @@
         <div id="htp-gamestart-wrap" style="display:none; margin-top: 14px; text-align: center; gap: 12px; justify-content: center; align-items: center;">
           <button class="start-btn" onclick="closeHTP()" style="padding: 10px 40px; font-size: 1.2rem; background: #94a3b8; box-shadow: 0 6px 0 #64748b, 0 10px 18px rgba(100,116,139,0.3);">닫기</button>
           <button class="start-btn" onclick="startFromHTP()" style="padding: 10px 40px; font-size: 1.2rem;">Game Start</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- [추가] 실제 게임 화면에서 홈/뒤로가기 버튼을 누르면 뜨는 종료 확인 팝업 -->
+    <div id="exitConfirmModal" class="modal-wrap">
+      <div class="modal-box" style="max-width: 420px;">
+        <h2 style="font-size: 1.6rem; font-weight: 900; color: #1e293b; margin: 0 0 4px;">게임을 종료할까요?</h2>
+        <img src="q.png" alt="" style="width: 100px; height: auto; margin: 6px auto; display: block; filter: drop-shadow(0 6px 10px rgba(0,0,0,0.15));">
+        <p style="font-size: 1.05rem; font-weight: 700; color: #475569; margin: 0;">지금 나가면 풀던 문제가 사라져요.</p>
+        <div style="display: flex; gap: 12px; justify-content: center; margin-top: 8px">
+          <button class="mbtn" style="background: #64748b; color: #fff; padding: 12px 24px;" onclick="confirmExitProceed()">나가기</button>
+          <button class="mbtn" style="background: #22c55e; color: #fff; padding: 12px 24px;" onclick="closeExitConfirm()">계속하기</button>
         </div>
       </div>
     </div>
@@ -1299,6 +1312,7 @@ const repModal = document.getElementById('repModal');
 const repBody = document.getElementById('repBody');
 const dashboard = document.getElementById('dashboard');
 const htpModal = document.getElementById('htpModal');
+const exitConfirmModal = document.getElementById('exitConfirmModal');
 const groupGrid = document.getElementById('groupGrid');
 const countDisp = document.getElementById('countDisp');
 startOverlay = document.getElementById('startOverlay');
@@ -1314,7 +1328,48 @@ document.addEventListener('contextmenu', e => e.preventDefault());
 function closeModalWrap(wrap) {
     if (!wrap || !wrap.classList.contains('active')) return;
     if (wrap === htpModal) { closeHTP(); return; }
+    if (wrap === exitConfirmModal) { closeExitConfirm(); return; }
     wrap.classList.remove('active');
+}
+
+// [추가] 실제 게임 화면(pg-game)에서 홈/뒤로가기를 누르면 뜨는 종료 확인 팝업.
+// how-to-play 팝업과 같은 방식(pauseAt/pausedMs/timerOn)으로 타이머를 일시정지했다가,
+// 계속하기를 누르면 그대로 이어서 흐르게 하고, 나가기를 누르면 원래 하려던 이동을 실행한다.
+let pendingExitAction = null;
+function requestExitConfirm(action) {
+    pendingExitAction = action;
+    if (page === 'pg-game' && timerOn) {
+        pauseAt = Date.now();
+        timerOn = false;
+    }
+    exitConfirmModal.classList.add('active');
+}
+function closeExitConfirm() {
+    exitConfirmModal.classList.remove('active');
+    if (page === 'pg-game' && pauseAt) {
+        pausedMs += Date.now() - pauseAt;
+        pauseAt = null;
+        timerOn = true;
+    }
+    pendingExitAction = null;
+}
+function confirmExitProceed() {
+    exitConfirmModal.classList.remove('active');
+    pauseAt = null;
+    const action = pendingExitAction;
+    pendingExitAction = null;
+    if (action) action();
+}
+// 라운드 결과(resModal)나 최종 기록(repModal)이 이미 떠 있다면 라운드가 끝난 뒤라 잃을
+// 진행 상황이 없으므로 종료 확인 없이 바로 이동한다.
+function isRoundAlreadyOver() {
+    return resModal.classList.contains('active') || repModal.classList.contains('active');
+}
+// 상단 네비 홈 버튼: goBackGlobal()과 달리 exitGameToHome()이 화면 구분 없이 바로 호출돼서
+// 여기서 직접 pg-game 여부를 확인해 종료 확인 팝업을 끼워 넣는다.
+function homeButtonClicked() {
+    if (page === 'pg-game' && !isRoundAlreadyOver()) { requestExitConfirm(exitGameToHome); return; }
+    exitGameToHome();
 }
 // [수정] 라운드 성공/실패 결과 팝업(resModal)은 배경 클릭/ESC로 그냥 닫히면 안 된다 -
 // 다음 라운드로 넘어가는 로직이 팝업의 버튼 클릭에 걸려 있어서, 버튼을 안 누르고 배경만
@@ -1418,7 +1473,10 @@ function goBackGlobal() {
     if (page === 'pg-setup') goBackToWelcome();
     else if (page === 'pg-category') goBackToSetup();
     else if (page === 'pg-subcategory') goBackToCategory();
-    else if (page === 'pg-game') exitGameToSubcategory();
+    else if (page === 'pg-game') {
+        if (isRoundAlreadyOver()) exitGameToSubcategory();
+        else requestExitConfirm(exitGameToSubcategory);
+    }
 }
 function goForwardGlobal() {
     if (page === 'pg-welcome') goToSetupFirst();
