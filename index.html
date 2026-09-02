@@ -1085,17 +1085,20 @@
 // 음소거 상태는 화면 전체에서 공유되는 값 하나(bgmMuted)로 관리하고 localStorage에 저장해,
 // 첫 화면에서 꺼두면 게임 화면으로 넘어가도 계속 꺼진 채로 유지되도록 한다.
 const bgmIntro = document.getElementById('bgm-intro');
+const bgmGame = document.getElementById('bgm-game');
 let bgmMuted = false;
 try { bgmMuted = localStorage.getItem('wordrace_bgm_muted') === '1'; } catch(e) {}
 let audioUnlocked = false;
 // 첫 화면(pg-welcome)은 HTML에 이미 active 클래스가 박혀 있어 showPage()를 거치지 않고 바로 표시되므로,
 // 초기값을 false로 두면 첫 화면에서는 배경음악이 재생되지 않는 문제가 있었다. pg-welcome도 배경음악이
-// 나와야 하는 화면이므로 true로 시작한다(이후 게임 화면 진입 시 showPage()가 false로 바꿔준다).
-let bgmActive = true; // 현재 화면이 배경음악을 틀어도 되는 화면인지(true) / 실제 게임 화면인지(false)
+// 나와야 하는 화면이므로 true로 시작한다(이후 게임 화면 진입 시 showPage()가 알맞은 트랙으로 바꿔준다).
+// [수정] 게임 화면에서 배경음악을 완전히 끄지 않고, bgm-game(the_mountain-kid) 트랙으로 바꿔서 재생한다.
+// 트랙 전환 시 이전 트랙은 확실히 멈춰서 두 곡이 겹쳐 들리지 않게 한다.
+let currentBgmKey = 'intro'; // 'intro' | 'game' — 지금 재생 대상이 어느 화면용 트랙인지
 
 function syncBgmAudio() {
-    if (!bgmIntro) return;
-    bgmIntro.muted = !audioUnlocked;
+    if (bgmIntro) bgmIntro.muted = !audioUnlocked;
+    if (bgmGame) bgmGame.muted = !audioUnlocked;
 }
 
 function updateMusicIcon() {
@@ -1104,15 +1107,18 @@ function updateMusicIcon() {
 }
 
 function applyBgmState() {
-    if (!bgmIntro) return;
-    if (!bgmActive || bgmMuted) { bgmIntro.pause(); return; }
+    const active = currentBgmKey === 'game' ? bgmGame : bgmIntro;
+    const inactive = currentBgmKey === 'game' ? bgmIntro : bgmGame;
+    if (inactive && !inactive.paused) inactive.pause();
+    if (!active) return;
+    if (bgmMuted) { active.pause(); return; }
     syncBgmAudio();
-    if (bgmIntro.paused) bgmIntro.play().catch(() => {});
+    if (active.paused) active.play().catch(() => {});
 }
 
-// key: 'intro' (배경음악 재생 가능한 화면) / 'game' (실제 게임 화면 - 배경음악 정지)
+// key: 'intro' (인트로/설정 화면 트랙) / 'game' (실제 게임 화면 트랙 - the_mountain-kid)
 function playBgm(key) {
-    bgmActive = (key !== 'game');
+    currentBgmKey = (key === 'game') ? 'game' : 'intro';
     applyBgmState();
 }
 
