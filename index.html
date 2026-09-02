@@ -648,28 +648,29 @@
         #pg-game .g-logo .y { color: var(--t-yellow); }
         #pg-game .track { flex: 1; height: 42px; background: #767483; border-radius: 999px; position: relative; display: flex; align-items: center; padding: 0 16px; box-shadow: inset 0 2px 6px rgba(0,0,0,.25); overflow: hidden; }
         #pg-game .track::before { content: ''; position: absolute; top: 50%; left: 0; right: 0; height: 4px; transform: translateY(-50%); background: repeating-linear-gradient(90deg, #fff 0 12px, transparent 12px 24px); opacity: .5; }
-        #pg-game .cp { width: 28px; height: 28px; border-radius: 50%; background: rgba(255,255,255,.35); color: #fff; display: grid; place-items: center; font-weight: 800; font-size: 13px; position: relative; z-index: 2; flex: none; border: 2px solid rgba(0,0,0,.12); }
+        #pg-game .cp { width: 28px; height: 28px; border-radius: 50%; background: rgba(255,255,255,.35); color: #fff; display: grid; place-items: center; font-weight: 800; font-size: 15px; position: relative; z-index: 2; flex: none; border: 2px solid rgba(0,0,0,.12); }
         #pg-game .cp.done { background: var(--t-green); color: #fff; }
         #pg-game .cp.now { background: var(--t-yellow); color: #5a3a00; transform: scale(1.18); box-shadow: 0 0 0 4px rgba(251,194,60,.45); }
         #pg-game .cp-sp { flex: 1; }
         #pg-game .flag-fin { width: 26px; height: 26px; flex: none; z-index: 2; }
         #pg-game .g-actions { display: flex; gap: 8px; align-items: center; }
-        #pg-game .g-htp { background: var(--t-blue); color: #fff; font-family: var(--f-cute); font-weight: 700; font-size: .95rem; padding: 10px 18px; border: 0; border-radius: 999px; cursor: pointer; box-shadow: 0 4px 0 #1e5fc0; white-space: nowrap; }
-        #pg-game .g-htp:hover { transform: translateY(-2px); box-shadow: 0 6px 0 #1e5fc0; }
+        /* [수정] 게임 화면 트랙의 결승선 옆에 있던 How to Play 버튼은 상단 nav의 ? 아이콘과
+           기능이 겹쳐서, 결승선을 표시하는 장식 라벨로 대체 (기존 .g-htp 자리/크기 재사용) */
+        #pg-game .g-finish-label { background: var(--t-blue); color: #fff; font-family: var(--f-cute); font-weight: 700; font-size: .95rem; padding: 10px 18px; border-radius: 999px; box-shadow: 0 4px 0 #1e5fc0; white-space: nowrap; }
         #pg-game .g-ico { width: 40px; height: 40px; border-radius: 50%; border: 2px solid #fff; background: #1e2a44; color: #fff; cursor: pointer; font-size: 16px; box-shadow: 0 4px 0 rgba(0,0,0,.25); }
         #pg-game .g-status { display: flex; gap: 12px; align-items: stretch; flex-wrap: wrap; margin-bottom: 10px; flex: none; }
         #pg-game .g-timer { flex: 1; min-width: 220px; background: linear-gradient(180deg, #ffd24a, #f6a500); border: 3px solid #dd8a00; border-radius: 20px; padding: 12px 18px; display: flex; align-items: center; gap: 14px; position: relative; box-shadow: 0 6px 0 #c67a00, 0 12px 22px rgba(221,138,0,.3); }
         #pg-game .g-timer .stop { width: 34px; height: 34px; flex: none; }
-        #pg-game .g-timer .lab { font-weight: 800; color: #7a4e00; font-size: .8rem; }
+        #pg-game .g-timer .lab { font-weight: 800; color: #7a4e00; font-size: .92rem; }
         #pg-game .g-timer .big { font-family: var(--f-num); font-size: clamp(34px, 5vw, 48px); color: #5a3a00; line-height: .9; font-variant-numeric: tabular-nums; }
         #pg-game .g-rec { flex: 1; min-width: 260px; background: #fff; border: 2px solid #cfe0f0; border-radius: 20px; padding: 12px 16px; display: flex; align-items: center; gap: 12px; box-shadow: 0 4px 12px rgba(31,58,110,.1); }
         #pg-game .g-rec .badge { width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(180deg, #3b9ae8, #2c7be0); display: grid; place-items: center; font-size: 22px; flex: none; box-shadow: 0 3px 0 rgba(30,95,192,.35); }
-        #pg-game .g-rec .k { font-weight: 800; color: #5c6577; font-size: .84rem; }
+        #pg-game .g-rec .k { font-weight: 800; color: #5c6577; font-size: .95rem; }
         #pg-game .g-rec .v { font-weight: 800; color: #1e5fc0; font-size: 1.6rem; font-variant-numeric: tabular-nums; font-family: var(--f-num); line-height: 1.05; }
         #pg-game .g-rec .hint { margin-left: auto; background: #eaf3fc; color: #2565b8; font-weight: 800; font-size: .92rem; line-height: 1; padding: 10px 12px; border-radius: 12px; text-align: center; flex: none; white-space: nowrap; }
         #pg-game .g-roster-row { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
         #pg-game .g-roster { display: flex; gap: 8px; flex-wrap: wrap; background: rgba(255,255,255,.55); padding: 9px; border-radius: 999px; margin-bottom: 0; justify-content: center; flex: 1; min-width: 0; }
-        #pg-game .chip { display: inline-flex; align-items: center; gap: 8px; padding: 8px 12px; border-radius: 999px; background: var(--chip-bg, #1e5fc0); color: #fff; font-weight: 800; font-size: .9rem; box-shadow: 0 3px 0 rgba(0,0,0,.1); }
+        #pg-game .chip { display: inline-flex; align-items: center; gap: 8px; padding: 8px 12px; border-radius: 999px; background: var(--chip-bg, #1e5fc0); color: #fff; font-weight: 800; font-size: 1.1rem; box-shadow: 0 3px 0 rgba(0,0,0,.1); }
         #pg-game .chip .car { width: 18px; height: 18px; flex: none; }
         #pg-game .board { flex: 1; min-height: 0; background: rgba(255,255,255,.55); border-radius: 22px; padding: 8px; box-shadow: inset 0 2px 10px rgba(30,95,192,.12); display: flex; }
         #pg-game .cells { width: 100%; height: 100%; display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
@@ -972,7 +973,7 @@
                 <svg class="flag-fin" viewBox="0 0 24 24"><path d="M5 22V3" stroke="#fff" stroke-width="2" stroke-linecap="round"/><rect x="7" y="3" width="14" height="10" fill="#fff"/></svg>
             </div>
             <div class="g-actions">
-                <button class="g-htp" onclick="openHTP()">How to Play</button>
+                <div class="g-finish-label">🏁 Finish!</div>
             </div>
         </div>
 
@@ -990,7 +991,7 @@
                     <div class="k">이전 라운드 기록</div>
                     <div class="v">없음</div>
                 </div>
-                <div class="hint">이 기록보다 빨라야 통과.</div>
+                <div class="hint" id="recHint">이 기록보다 빨라야 통과됩니다.</div>
             </div>
         </div>
 
@@ -1007,7 +1008,7 @@
         <div id="startOverlay" class="start-ov">
             <div class="start-card">
                 <div id="startRoundLabel" class="start-round">ROUND 1 / 5</div>
-                <button id="startBtn" class="start-btn" type="button">스페이스를 눌러 시작 <span class="kc">Space</span></button>
+                <button id="startBtn" class="start-btn" type="button">스페이스 바를 눌러 시작하세요 <span class="kc">Space</span></button>
             </div>
             <div id="count" class="count"></div>
         </div>
@@ -1257,6 +1258,7 @@ const grid = document.getElementById('colorGrid');
 const roundDisp = document.getElementById('roundDisp');
 const roundLabel = document.getElementById('roundLabel');
 const recDisp = document.getElementById('recDisp');
+const recHint = document.getElementById('recHint');
 const nextBtn = document.getElementById('nextBtn');
 const resModal = document.getElementById('resModal');
 const resBox = document.getElementById('resBox');
@@ -1652,7 +1654,7 @@ function playCountdownSound(label){
     if (label === 'GO!') {
       osc.type = 'triangle';
       osc.frequency.setValueAtTime(920, now);
-      gain.gain.exponentialRampToValueAtTime(0.18, now + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.32, now + 0.02);
       gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.24);
       osc.start(now);
       osc.stop(now + 0.24);
@@ -1660,7 +1662,7 @@ function playCountdownSound(label){
       osc.type = 'sine';
       const pitch = 520 - (Number(label) - 1) * 40;
       osc.frequency.setValueAtTime(pitch, now);
-      gain.gain.exponentialRampToValueAtTime(0.16, now + 0.04);
+      gain.gain.exponentialRampToValueAtTime(0.3, now + 0.04);
       gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.18);
       osc.start(now);
       osc.stop(now + 0.18);
@@ -1704,7 +1706,7 @@ function playSuccess(){
     const c=new A(),now=c.currentTime;
     [440, 554, 659, 880].forEach((f, i) => {
       const o=c.createOscillator(),g=c.createGain(); o.type='sine'; o.frequency.setValueAtTime(f, now + i*0.15);
-      g.gain.setValueAtTime(0.2, now + i*0.15); g.gain.exponentialRampToValueAtTime(0.01, now + i*0.15 + 0.3);
+      g.gain.setValueAtTime(0.38, now + i*0.15); g.gain.exponentialRampToValueAtTime(0.01, now + i*0.15 + 0.3);
       o.connect(g); g.connect(c.destination); o.start(now + i*0.15); o.stop(now + i*0.15 + 0.3);
     });
   }catch(e){}
@@ -1865,6 +1867,8 @@ function initGrid(reset=false){
         if (roundLabel) roundLabel.textContent = `진행 시간 · ROUND ${roundNum} / 5`;
         const recValue = document.querySelector('#recDisp .v');
         if (recValue) recValue.textContent = '없음';
+        // 1라운드는 아직 깰 기록이 없어서 "이 기록보다 빨라야 통과됩니다" 문구가 의미 없으므로 숨긴다
+        if (recHint) recHint.style.display = 'none';
         const timerBig = document.querySelector('#timerDisp .big');
         if (timerBig) timerBig.textContent = '00.00';
     }
@@ -1949,6 +1953,7 @@ function handleNext(){
         updateTrackMarkers();
         const recValue = document.querySelector('#recDisp .v');
         if (recValue) recValue.textContent = fmt(lastRec);
+        if (recHint) recHint.style.display = ''; // 2라운드부터는 깰 기록이 생기므로 다시 표시
         initGrid();
     } else {
         initGrid(); 
