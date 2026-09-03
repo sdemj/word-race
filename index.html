@@ -389,7 +389,7 @@
         .res-char-img {
             width: 150px;
             height: auto;
-            margin: 0 auto 10px;
+            margin: 10px auto;
             display: block;
             filter: drop-shadow(0 6px 10px rgba(0,0,0,0.15));
         }
@@ -667,7 +667,7 @@
         #pg-game .g-actions { display: flex; gap: 8px; align-items: center; }
         /* [수정] 게임 화면 트랙의 결승선 옆에 있던 How to Play 버튼은 상단 nav의 ? 아이콘과
            기능이 겹쳐서, 결승선을 표시하는 장식 라벨로 대체 (기존 .g-htp 자리/크기 재사용) */
-        #pg-game .g-finish-label { background: var(--t-blue); color: #fff; font-family: var(--f-cute); font-weight: 700; font-size: .95rem; padding: 10px 18px; border-radius: 999px; box-shadow: 0 4px 0 #1e5fc0; white-space: nowrap; }
+        #pg-game .g-finish-label { display: block; }
         #pg-game .g-ico { width: 40px; height: 40px; border-radius: 50%; border: 2px solid #fff; background: #1e2a44; color: #fff; cursor: pointer; font-size: 16px; box-shadow: 0 4px 0 rgba(0,0,0,.25); }
         #pg-game .g-status { display: flex; gap: 12px; align-items: stretch; flex-wrap: wrap; margin-bottom: 10px; flex: none; }
         #pg-game .g-timer { flex: 1; min-width: 220px; background: linear-gradient(180deg, #ffd24a, #f6a500); border: 3px solid #dd8a00; border-radius: 20px; padding: 12px 18px; display: flex; align-items: center; gap: 14px; position: relative; box-shadow: 0 6px 0 #c67a00, 0 12px 22px rgba(221,138,0,.3); }
@@ -764,14 +764,12 @@
         #pg-game .action-btn.visible { display: flex; }
         #pg-game .mobile-space-btn {
             flex: none;
-            font-family: var(--f-cute); font-weight: 800; font-size: .92rem; letter-spacing: .5px;
-            color: #fff; background: linear-gradient(180deg, #5AA3EF 0%, #1E5FC0 100%);
-            border: 3px solid #ffffff; border-radius: 999px; padding: 9px 20px;
-            display: flex; align-items: center; gap: 6px; cursor: pointer; z-index: 15;
-            box-shadow: 0 4px 0 #14428c, 0 8px 14px rgba(20,66,140,0.3);
+            background: none; border: none; padding: 0;
+            display: flex; align-items: center; cursor: pointer; z-index: 15;
         }
-        #pg-game .mobile-space-btn:active {
-            transform: translateY(3px); box-shadow: 0 1px 0 #14428c;
+        #pg-game .mobile-space-btn img { display: block; }
+        #pg-game .mobile-space-btn:active img {
+            transform: translateY(3px) scale(0.96);
         }
         #pg-game .start-ov {
             position: absolute;
@@ -879,12 +877,12 @@
         }
 
         /* ===== 화면 속 스페이스 버튼 - 가시성 강화(은은한 펄스) ===== */
-        #pg-game .mobile-space-btn {
+        #pg-game .mobile-space-btn img {
             animation: spaceBtnPulse 1.8s ease-in-out infinite;
         }
         @keyframes spaceBtnPulse {
-            0%, 100% { box-shadow: 0 4px 0 #14428c, 0 8px 14px rgba(20,66,140,0.3); }
-            50% { box-shadow: 0 4px 0 #14428c, 0 8px 22px rgba(20,66,140,0.65), 0 0 0 6px rgba(30,95,192,0.18); }
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.08); }
         }
     </style>
 </head>
@@ -959,6 +957,75 @@ window.whitenImageBackground = function (imgEl) {
 };
 document.addEventListener('DOMContentLoaded', function () {
     whitenImageBackground(document.getElementById('exit-confirm-char-img'));
+});
+</script>
+
+<!-- [추가] 이모지를 대체하는 아이콘 그림(finish.png, tro.png, space.png, warn.png)은 흰 사각형
+     배경이 그대로 찍혀 있어, 들어가는 버튼/카드 배경색이 흰색이 아니면 도드라져 보인다.
+     가장자리(네 변)부터 흰색 영역을 채우기 방식(flood fill)으로 찾아 투명화하고, 배경과
+     맞닿은 경계는 알파를 서서히 낮춰 계단현상 없이 부드럽게 만든다. 이렇게 하면 아이콘이
+     어떤 배경 위에 있든 그 배경색이 그대로 비쳐 보여 "배경이 버튼/페이지와 동일해" 보인다. -->
+<script>
+window.removeWhiteBackground = function (imgEl, opts) {
+    if (!imgEl) return;
+    opts = opts || {};
+    var hardTol = opts.hardTol == null ? 12 : opts.hardTol;
+    var softTol = opts.softTol == null ? 60 : opts.softTol;
+    function apply() {
+        try {
+            var w = imgEl.naturalWidth, h = imgEl.naturalHeight;
+            if (!w || !h) return;
+            var canvas = document.createElement('canvas');
+            canvas.width = w; canvas.height = h;
+            var ctx = canvas.getContext('2d');
+            ctx.drawImage(imgEl, 0, 0);
+            var imageData = ctx.getImageData(0, 0, w, h);
+            var data = imageData.data;
+            var n = w * h;
+            function whiteness(i) {
+                return Math.min(data[i * 4], data[i * 4 + 1], data[i * 4 + 2]);
+            }
+            var bg = new Uint8Array(n);
+            var visited = new Uint8Array(n);
+            var stack = [];
+            for (var x = 0; x < w; x++) { stack.push(x); stack.push((h - 1) * w + x); }
+            for (var y = 0; y < h; y++) { stack.push(y * w); stack.push(y * w + w - 1); }
+            while (stack.length) {
+                var i = stack.pop();
+                if (visited[i]) continue;
+                visited[i] = 1;
+                if (whiteness(i) < 255 - hardTol) continue;
+                bg[i] = 1;
+                data[i * 4 + 3] = 0;
+                var px = i % w, py = (i / w) | 0;
+                if (px > 0) stack.push(i - 1);
+                if (px < w - 1) stack.push(i + 1);
+                if (py > 0) stack.push(i - w);
+                if (py < h - 1) stack.push(i + w);
+            }
+            for (var y2 = 0; y2 < h; y2++) {
+                for (var x2 = 0; x2 < w; x2++) {
+                    var i2 = y2 * w + x2;
+                    if (bg[i2]) continue;
+                    var wn = whiteness(i2);
+                    if (wn < 255 - softTol) continue;
+                    var touchesBg =
+                        (x2 > 0 && bg[i2 - 1]) || (x2 < w - 1 && bg[i2 + 1]) ||
+                        (y2 > 0 && bg[i2 - w]) || (y2 < h - 1 && bg[i2 + w]);
+                    if (!touchesBg) continue;
+                    var t = (wn - (255 - softTol)) / softTol;
+                    data[i2 * 4 + 3] = Math.round(data[i2 * 4 + 3] * (1 - t));
+                }
+            }
+            ctx.putImageData(imageData, 0, 0);
+            imgEl.src = canvas.toDataURL('image/png');
+        } catch (e) { /* 캔버스 작업이 막히면 원본 그림을 그대로 둔다 */ }
+    }
+    if (imgEl.complete && imgEl.naturalWidth) apply();
+    else imgEl.addEventListener('load', apply, { once: true });
+};
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.icon-photo').forEach(function (el) { removeWhiteBackground(el); });
 });
 </script>
 
@@ -1056,7 +1123,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 <svg class="flag-fin" viewBox="0 0 24 24"><path d="M5 22V3" stroke="#fff" stroke-width="2" stroke-linecap="round"/><rect x="7" y="3" width="14" height="10" fill="#fff"/></svg>
             </div>
             <div class="g-actions">
-                <div class="g-finish-label">🏁 Finish!</div>
+                <img class="icon-photo g-finish-label" src="finish.png" alt="Finish!" style="width:auto;height:52px;object-fit:contain;">
             </div>
         </div>
 
@@ -1069,7 +1136,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 </div>
             </div>
             <div id="recDisp" class="g-rec">
-                <div class="badge">🏆</div>
+                <div class="badge"><img class="icon-photo" src="tro.png" alt="" style="width:34px;height:34px;object-fit:contain;"></div>
                 <div>
                     <div class="k">이전 라운드 기록</div>
                     <div class="v">없음</div>
@@ -1081,7 +1148,7 @@ document.addEventListener('DOMContentLoaded', function () {
         <div class="g-roster-row">
             <div id="dashboard" class="g-roster"></div>
             <!-- 모바일에는 물리 스페이스바가 없으므로 탭으로 대신할 수 있는 버튼 -->
-            <button id="mobileSpaceBtn" class="mobile-space-btn" type="button" onclick="triggerSpaceAction()">👆 SPACE</button>
+            <button id="mobileSpaceBtn" class="mobile-space-btn" type="button" onclick="triggerSpaceAction()"><img class="icon-photo" src="space.png" alt="SPACE" style="width:64px;height:auto;object-fit:contain;"></button>
         </div>
 
         <div class="board">
@@ -1108,8 +1175,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     <div id="resModal" class="modal-wrap">
       <div id="resBox" class="modal-box">
-        <img id="resCharImg" class="res-char-img" src="" alt="" hidden>
         <div style="color:#94a3b8;font-weight:700;font-size:1.1rem;letter-spacing:2px;text-transform:uppercase">이번 라운드 기록</div>
+        <img id="resCharImg" class="res-char-img" src="" alt="" hidden>
         <div id="resTime" class="modal-time">00.00초</div>
         <div id="resMsg" style="font-size:1.1rem;font-weight:700;color:#cbd5e1"></div>
         <div id="resBtns" style="display:flex;gap:12px;justify-content:center;margin-top:8px"></div>
@@ -1149,7 +1216,7 @@ document.addEventListener('DOMContentLoaded', function () {
           <p><strong>6.</strong> 5라운드까지 성공하면 Word Race 완주 성공!</p>
           <p class="hanging-indent"><strong>7.</strong> 키보드의 스페이스바 대신, 화면 속 [👆 SPACE] 버튼을 눌러서 진행할 수도 있어요.</p>
           <div style="margin-top: 14px; padding: 12px 16px; background: #f1f5f9; border-radius: 12px; border-left: 5px solid #cbd5e1;">
-            <p style="margin: 0; font-weight: 800; color: #dc2626;">⚠️ 주의사항</p>
+            <p style="margin: 0; font-weight: 800; color: #dc2626; display: flex; align-items: center; gap: 6px;"><img class="icon-photo" src="warn.png" alt="" style="width:22px;height:22px;object-fit:contain;"> 주의사항</p>
             <p style="margin: 4px 0 0 0; color: #1e293b;">- 팀원 모두 정확하게 단어를 읽어요.</p>
             <p style="margin: 0; color: #1e293b;">- 다른 팀 색깔의 단어를 읽지 마세요.</p>
           </div>
