@@ -387,7 +387,7 @@
         .modal-box h2 { font-size: 2.2rem; font-weight: 900; color: #1e293b; margin-bottom: 10px; letter-spacing: -1px}
         /* [추가] 라운드 성공/실패 결과 팝업에 성공/실패를 나타내는 캐릭터 이미지 표시 */
         .res-char-img {
-            width: 110px;
+            width: 150px;
             height: auto;
             margin: 0 auto 10px;
             display: block;
@@ -890,6 +890,78 @@
 </head>
 <body>
 
+<!-- [추가] 휴대폰 세로 화면 안내 - 태블릿에는 안 뜨고, 휴대폰 화면 크기에서 세로로 시작했을 때만 뜬다.
+     가로로 돌리면 자동으로 사라지고, "이대로 할래요"를 누르면 세로로도 계속 플레이할 수 있다. -->
+<div id="rotate-overlay" style="display:none;position:fixed;inset:0;z-index:2147483000;background:#f0f9ff;flex-direction:column;align-items:center;justify-content:center;gap:20px;padding:36px;text-align:center;font-family:var(--f-cute);">
+    <div style="width:92px;height:148px;border:9px solid #3592DE;border-radius:26px;background:#ffffff;animation:rotateHintWR 2.6s ease-in-out infinite;"></div>
+    <h2 style="font-weight:700;font-size:24px;color:#14428c;margin:0;">화면을 가로로 돌려 주세요</h2>
+    <p style="font-weight:400;font-size:16px;color:#475569;margin:0;line-height:1.6;">가로로 놓으면 글자와 블록이 커져서<br>훨씬 편하게 할 수 있어요.</p>
+    <button type="button" onclick="dismissRotateOverlay()" style="font-family:var(--f-cute);font-weight:700;font-size:17px;color:#ffffff;background:#fbbf24;border:none;box-shadow:0 6px 0 #d97706;border-radius:999px;padding:12px 32px;cursor:pointer;">이대로 할래요</button>
+</div>
+<style>
+@keyframes rotateHintWR {
+    0%, 15% { transform: rotate(0deg); }
+    45%, 60% { transform: rotate(-90deg); }
+    90%, 100% { transform: rotate(0deg); }
+}
+</style>
+<script>
+(function () {
+    var overlay = document.getElementById('rotate-overlay');
+    if (!overlay) return;
+    var dismissed = false;
+    // 태블릿(짧은 쪽이 대략 600px 이상, 아이패드 세로 768px 등)은 제외하고
+    // 휴대폰 화면 크기에서 세로로 시작했을 때만 보여준다. screen.width/height는
+    // 회전해도 "짧은 쪽" 값 자체는 기기 고유값이라 방향과 무관하게 안정적으로 쓸 수 있다.
+    function isPhoneSized() {
+        var shortSide = Math.min(window.screen.width, window.screen.height);
+        return shortSide > 0 && shortSide < 600;
+    }
+    function shouldShow() {
+        return !dismissed && isPhoneSized() && window.innerHeight > window.innerWidth;
+    }
+    function updateRotateOverlay() {
+        overlay.style.display = shouldShow() ? 'flex' : 'none';
+    }
+    window.dismissRotateOverlay = function () {
+        dismissed = true;
+        updateRotateOverlay();
+    };
+    window.addEventListener('resize', updateRotateOverlay);
+    window.addEventListener('orientationchange', updateRotateOverlay);
+    updateRotateOverlay();
+})();
+</script>
+
+<!-- [추가] 배경 없는 캐릭터 그림(q.png, s.png, f.png)을 흰 카드 배경과 완전히 통일시키기 위한 처리.
+     원본 PNG의 가장자리에 아주 옅은 회색끼가 남아있어(반투명 처리 시 흔한 잔여물) 순백 카드
+     위에서 미세하게 도드라져 보이므로, 캔버스에 흰색을 먼저 채운 뒤 그 위에 그림을 그려
+     완전히 흰 배경과 합성한 이미지로 바꿔치기한다. resCharImg는 라운드 결과에 따라 src가
+     동적으로 바뀌므로 game-wrapper 스크립트 쪽에서 src를 바꿀 때마다 이 함수를 다시 부른다. -->
+<script>
+window.whitenImageBackground = function (imgEl) {
+    if (!imgEl) return;
+    function apply() {
+        try {
+            var w = imgEl.naturalWidth, h = imgEl.naturalHeight;
+            if (!w || !h) return;
+            var canvas = document.createElement('canvas');
+            canvas.width = w; canvas.height = h;
+            var ctx = canvas.getContext('2d');
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, w, h);
+            ctx.drawImage(imgEl, 0, 0);
+            imgEl.src = canvas.toDataURL('image/png');
+        } catch (e) { /* 캔버스 작업이 막히면 원본 그림을 그대로 둔다 */ }
+    }
+    if (imgEl.complete && imgEl.naturalWidth) apply();
+    else imgEl.addEventListener('load', apply, { once: true });
+};
+document.addEventListener('DOMContentLoaded', function () {
+    whitenImageBackground(document.getElementById('exit-confirm-char-img'));
+});
+</script>
+
 <audio id="bgm-intro" src="fluxsound-cheerful-upbeat-kids-486631.mp3" loop preload="none"></audio>
 <!-- 실제 게임(단어 읽기) 화면에서는 학생이 소리 내어 읽는 활동에 방해되지 않도록 배경음악을 재생하지 않는다.
      이 트랙은 더 이상 사용하지 않으므로 불필요한 로딩을 막기 위해 preload를 꺼둔다. -->
@@ -1093,7 +1165,7 @@
     <div id="exitConfirmModal" class="modal-wrap">
       <div class="modal-box" style="max-width: 560px; padding: 50px;">
         <h2 style="font-size: 2.2rem; font-weight: 900; color: #1e293b; margin: 0 0 6px;">게임을 종료할까요?</h2>
-        <img src="q.png" alt="" style="width: 160px; height: auto; margin: 8px auto; display: block; filter: drop-shadow(0 6px 10px rgba(0,0,0,0.15));">
+        <img id="exit-confirm-char-img" src="q.png" alt="" style="width: 200px; height: auto; margin: 8px auto; display: block; filter: drop-shadow(0 6px 10px rgba(0,0,0,0.15));">
         <p style="font-size: 1.3rem; font-weight: 700; color: #475569; margin: 0;">지금 나가면 풀던 문제가 사라져요.</p>
         <div style="display: flex; gap: 16px; justify-content: center; margin-top: 12px">
           <button class="mbtn" style="background: #64748b; color: #fff; padding: 16px 34px; font-size: 1.2rem;" onclick="confirmExitProceed()">나가기</button>
@@ -2015,6 +2087,7 @@ function showResult(dur) {
         resCharImg.src = 's.png';
         resCharImg.alt = '라운드 성공';
         resCharImg.hidden = false;
+        whitenImageBackground(resCharImg);
         nextBtn.classList.add('visible');
         playSuccess();
         spawnConfetti(45);
@@ -2026,6 +2099,7 @@ function showResult(dur) {
         resCharImg.src = 'f.png';
         resCharImg.alt = '라운드 실패';
         resCharImg.hidden = false;
+        whitenImageBackground(resCharImg);
         nextBtn.classList.remove('visible');
 
         resTime.style.color = '#b91c1c';
