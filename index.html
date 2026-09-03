@@ -2255,6 +2255,9 @@ function startFromHTP() {
 // 화면의 스페이스 버튼을 탭했을 때도 이 함수를 그대로 호출한다.
 function triggerSpaceAction() {
     if(htpModal.classList.contains('active')) return;
+    // [추가] 종료 확인 팝업이 떠 있는 동안은 게임 화면이 완전히 멈춰야 하므로,
+    // 스페이스바/모바일 스페이스 버튼 입력이 뒤에 있는 칸 공개·라운드 진행에 먹히지 않게 막는다.
+    if(exitConfirmModal.classList.contains('active')) return;
 
     if(page === 'pg-setup') {
         goToCategoryAfterSetup();
