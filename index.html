@@ -815,12 +815,10 @@
             gap: 12px;
         }
         #pg-game .start-btn .kc {
-            font-family: var(--f-cute);
-            font-weight: 800;
-            font-size: 13px;
-            background: rgba(0,0,0,.18);
-            border-radius: 6px;
-            padding: 4px 10px;
+            height: 34px;
+            width: auto;
+            object-fit: contain;
+            display: block;
         }
         #pg-game .count {
             position: absolute;
@@ -1148,7 +1146,7 @@ document.addEventListener('DOMContentLoaded', function () {
         <div class="g-roster-row">
             <div id="dashboard" class="g-roster"></div>
             <!-- 모바일에는 물리 스페이스바가 없으므로 탭으로 대신할 수 있는 버튼 -->
-            <button id="mobileSpaceBtn" class="mobile-space-btn" type="button" onclick="triggerSpaceAction()"><img class="icon-photo" src="space.png" alt="SPACE" style="width:64px;height:auto;object-fit:contain;"></button>
+            <button id="mobileSpaceBtn" class="mobile-space-btn" type="button" onclick="triggerSpaceAction()"><img class="icon-photo" src="spaces.png" alt="SPACE" style="width:64px;height:auto;object-fit:contain;"></button>
         </div>
 
         <div class="board">
@@ -1158,7 +1156,7 @@ document.addEventListener('DOMContentLoaded', function () {
         <div id="startOverlay" class="start-ov">
             <div class="start-card">
                 <div id="startRoundLabel" class="start-round">ROUND 1 / 5</div>
-                <button id="startBtn" class="start-btn" type="button">스페이스 바를 눌러 시작하세요 <span class="kc">Space</span></button>
+                <button id="startBtn" class="start-btn" type="button">스페이스 바를 눌러 시작하세요 <img class="icon-photo kc" src="space.png" alt="Space"></button>
             </div>
             <div id="count" class="count"></div>
         </div>
@@ -2152,7 +2150,7 @@ function showResult(dur) {
         resCharImg.src = 's.png';
         resCharImg.alt = '라운드 성공';
         resCharImg.hidden = false;
-        whitenImageBackground(resCharImg);
+        removeWhiteBackground(resCharImg);
         nextBtn.classList.add('visible');
         playSuccess();
         spawnConfetti(45);
@@ -2164,7 +2162,7 @@ function showResult(dur) {
         resCharImg.src = 'f.png';
         resCharImg.alt = '라운드 실패';
         resCharImg.hidden = false;
-        whitenImageBackground(resCharImg);
+        removeWhiteBackground(resCharImg);
         nextBtn.classList.remove('visible');
 
         resTime.style.color = '#b91c1c';
