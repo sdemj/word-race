@@ -1215,15 +1215,14 @@ document.addEventListener('DOMContentLoaded', function () {
 /* ================= BACKGROUND MUSIC ================= */
 // 실제 게임 화면(pg-game)에서는 팀원들이 단어를 소리 내어 읽는 활동에 방해되지 않도록
 // 배경음악을 끄고, 인트로/팀설정/주제선택 화면에서만 재생한다(교실 수업용 소음 저감).
-// 음소거 상태는 화면 전체에서 공유되는 값 하나(bgmMuted)로 관리하고 localStorage에 저장해,
-// 첫 화면에서 꺼두면 게임 화면으로 넘어가도 계속 꺼진 채로 유지되도록 한다.
+// 음소거 상태는 화면 전체에서 공유되는 값 하나(bgmMuted)로 관리한다. 여러 사람이 함께 쓰는
+// 공용 기기라 이전 사용자의 선택이 남지 않도록 localStorage에는 저장하지 않고, 새로 열 때마다
+// 항상 기본값으로 시작한다.
 const bgmIntro = document.getElementById('bgm-intro');
 const bgmGame = document.getElementById('bgm-game');
-let bgmMuted = false; // 인트로~선택 화면 트랙의 음소거 상태 (localStorage에 저장, 기본 on)
-try { bgmMuted = localStorage.getItem('wordrace_bgm_muted') === '1'; } catch(e) {}
+let bgmMuted = false; // 인트로~선택 화면 트랙의 음소거 상태 (기본 on)
 // [추가] 실제 게임(읽기) 화면 트랙은 학생이 소리 내어 읽는 활동에 방해되지 않도록 매번
-// 꺼진 채로 시작한다(기본 off). 인트로~선택 화면의 저장된 선호도(bgmMuted)와는 별개로
-// 관리해서, 게임 화면을 들락거려도 인트로 쪽 기본값(on)에는 영향을 주지 않는다.
+// 꺼진 채로 시작한다(기본 off). 인트로~선택 화면 쪽 기본값(on)과는 별개로 관리한다.
 let gameBgmMuted = true;
 let audioUnlocked = false;
 // 첫 화면(pg-welcome)은 HTML에 이미 active 클래스가 박혀 있어 showPage()를 거치지 않고 바로 표시되므로,
@@ -1270,7 +1269,6 @@ function toggleMusic() {
         gameBgmMuted = !gameBgmMuted;
     } else {
         bgmMuted = !bgmMuted;
-        try { localStorage.setItem('wordrace_bgm_muted', bgmMuted ? '1' : '0'); } catch(e) {}
     }
     applyBgmState();
     updateMusicIcon();
@@ -1295,15 +1293,14 @@ window.addEventListener('load', initBgm);
 
 /* ================= SFX ON/OFF ================= */
 // 배경음악과 별개로 효과음(카운트다운·성공·실패·완주 축하음 등)만 따로 끌 수 있다.
+// 공용 기기에서 이전 사용자의 선택이 남지 않도록 localStorage에는 저장하지 않는다.
 let sfxMuted = false;
-try { sfxMuted = localStorage.getItem('wordrace_sfx_muted') === '1'; } catch(e) {}
 function updateSfxIcon() {
     const icon = document.getElementById('sfx-toggle-icon');
     if (icon) icon.className = sfxMuted ? 'fa-solid fa-bell-slash' : 'fa-solid fa-bell';
 }
 function toggleSfx() {
     sfxMuted = !sfxMuted;
-    try { localStorage.setItem('wordrace_sfx_muted', sfxMuted ? '1' : '0'); } catch(e) {}
     updateSfxIcon();
 }
 
