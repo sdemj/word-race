@@ -118,11 +118,11 @@
                항상 컨테이너에 맞춰 늘어나므로 별도 이미지 교체 없이도 이 비율 변경이 반영된다. */
             width: 1400px;
             height: 820px;
-            position: absolute;
-            /* [수정] 상단 고정 네비 버튼과 겹치지 않도록 화면 중앙보다 살짝 아래로 - pick the word와
-               동일한 방식. 이렇게 하면 resizeGame()에서 위쪽 여백을 덜 희생하고도 겹치지 않아,
-               다른 두 게임과 비슷한 크기로 확대될 수 있다 (아래 CONTAINER_Y_OFFSET과 값을 맞출 것). */
-            top: calc(50% + 40px);
+            /* fixed 여야 한다: absolute 이면 1400px 원본 크기가 문서 폭을 넓혀, 휴대폰 브라우저가
+               화면을 통째로 축소하고 innerWidth 도 부풀어 게임판이 넓어진 채로 굳는다 (다른 게임과 동일하게 fixed) */
+            position: fixed;
+            /* 실제 위치는 resizeGame()이 상단 띠 아래 공간의 가운데로 잡는다 */
+            top: 50%;
             left: 50%;
             transform-origin: center center;
             transform: translate(-50%, -50%) scale(1); 
@@ -883,6 +883,7 @@
             50% { transform: scale(1.08); }
         }
     </style>
+    <link rel="stylesheet" href="topnav.css">
 </head>
 <body>
 
@@ -1032,6 +1033,7 @@ document.addEventListener('DOMContentLoaded', function () {
     <i class="fa-solid fa-expand" id="fullscreen-toggle-icon"></i>
   </button>
 </div>
+<script src="topnav.js" data-backdrop="0.png"></script>
 
 <div class="game-container">
     <div id="confettiLayer" class="confetti-layer"></div>
@@ -2288,39 +2290,9 @@ if (startBtn) {
     });
 }
 
-// .game-container CSS의 top:calc(50% + 40px)와 반드시 같은 값을 유지할 것 -
-// 이 오프셋만큼 아래로 미리 밀어둔 덕분에, 위쪽 여백을 상단 네비 버튼 두 배로
-// 확보하지 않고도 겹치지 않아 다른 두 게임과 비슷한 크기로 키울 수 있다.
-const CONTAINER_Y_OFFSET = 40;
-
 function resizeGame() {
-    const container = document.querySelector('.game-container');
-    const winW = window.innerWidth;
-    const winH = window.innerHeight;
-    let scale = Math.min((winW / 1400) * 0.96, (winH / 820) * 0.96);
-
-    // 상단 네비 버튼(홈/뒤로/전체화면 등)은 화면에 고정돼 있어 게임판과 같이 커지지 않는다.
-    // 게임판을 계속 확대하면 위쪽 여백이 네비 버튼 아래쪽보다 좁아져 서로 겹치므로,
-    // 그 지점까지만 확대되도록 상한을 둔다 (CONTAINER_Y_OFFSET만큼 위쪽 여백이 이미
-    // 넉넉해진 걸 반영해서 필요 이상으로 작게 잡히지 않게 한다).
-    const navBar = document.getElementById('nav-left-group');
-    if (navBar) {
-        const gap = 12;
-        const navClearance = navBar.getBoundingClientRect().bottom + gap;
-        const maxScaleByNav = (winH - navClearance * 2 + CONTAINER_Y_OFFSET * 2) / 820;
-        if (maxScaleByNav > 0) scale = Math.min(scale, maxScaleByNav);
-    }
-
-    // 화면이 좁아지면(모바일 등) 좌/우 네비 버튼 그룹이 화면 가운데서 서로 겹치므로,
-    // 폭이 충분할 때(520px 이상)는 100%, 좁아질수록 최대 65%까지 함께 줄어들도록 축소한다.
-    // (pick the word / WordCatch300과 동일한 방식)
-    const navScale = Math.max(0.65, Math.min(1, winW / 520));
-    const navLeft = document.getElementById('nav-left-group');
-    const navRight = document.getElementById('nav-right-group');
-    if (navLeft) navLeft.style.transform = `scale(${navScale})`;
-    if (navRight) navRight.style.transform = `scale(${navScale})`;
-
-    container.style.transform = `translate(-50%, -50%) scale(${scale})`;
+    // 공통 상단바가 [상단바 + 게임 카드]를 창 가운데 여백을 두고 맞춘다 (게임판 1400x820)
+    TopNav.fit(document.querySelector('.game-container'), 1400, 820);
 }
 window.addEventListener('resize', resizeGame);
 window.addEventListener('load', resizeGame);
