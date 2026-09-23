@@ -2215,6 +2215,18 @@ function openHTP(source) {
         pauseAt = Date.now();
         timerOn = false;
     }
+    // [수정] 카운트다운(3,2,1,GO) 도중에 How to Play를 열면, 팝업 뒤에서 카운트다운
+    // setTimeout 체인이 그대로 흘러가서 팝업이 떠 있는 채로 라운드가 시작돼버렸다.
+    // 카운트다운을 완전히 취소하고 "스페이스 바를 눌러 시작하세요" 상태로 되돌린다
+    // (닫은 뒤 스페이스바를 다시 눌러야 카운트다운이 새로 시작된다).
+    if (countdownActive) {
+        if (countdownTimerId) { clearTimeout(countdownTimerId); countdownTimerId = null; }
+        countdownActive = false;
+        const startCard = document.querySelector('#startOverlay .start-card');
+        if (startCard) startCard.classList.remove('is-counting');
+        if (startBtn) startBtn.style.display = '';
+        if (countEl) { countEl.className = 'count'; countEl.innerHTML = ''; }
+    }
     document.getElementById('htpModal').classList.add('active');
     document.getElementById('htp-gamestart-wrap').style.display = (htpSource === 'welcome') ? 'flex' : 'none';
 }
