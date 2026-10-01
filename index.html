@@ -725,7 +725,12 @@
             text-align: center;
             line-height: 1.2;
             padding: 0 6px;
+            /* 단어 중간에서 줄이 바뀌지 않게 (photographer → photograph/er 방지). 두 단어(police station)는 띄어쓰기에서만 줄바꿈 */
+            word-break: keep-all;
+            overflow-wrap: normal;
         }
+        /* 10글자 이상 긴 단어는 글자를 조금 줄인다. 그래도 칸을 넘치면 fitCellWord()가 들어갈 때까지 더 줄인다 */
+        #pg-game .cell.long-word .word { font-size: 0.8em; }
         #pg-game .cell.revealed .word {
             opacity: 1;
             transform: scale(1);
@@ -2093,7 +2098,7 @@ function initGrid(reset=false){
     showStartOverlay();
     const cols=getColors(), wrds=getWords();
     for(let i=0; i<cellCount; i++){
-        const cell=document.createElement('div'); cell.className='cell';
+        const cell=document.createElement('div'); cell.className = wrds[i].length >= 10 ? 'cell long-word' : 'cell';
         cell.style.setProperty('--cell-color', cols[i]);
         cell.innerHTML = `<span class="num">${String(i+1).padStart(2,'0')}</span><div class="overlay" id="ov-${i}">?</div><span class="word">${wrds[i]}</span>`;
         grid.appendChild(cell);
@@ -2270,7 +2275,7 @@ function triggerSpaceAction() {
             revIdx++;
             const cell = grid.children[revIdx];
             const ov = document.getElementById('ov-' + revIdx);
-            if(cell) cell.classList.add('revealed');
+            if(cell) { cell.classList.add('revealed'); fitCellWord(cell); }
             if(ov) ov.classList.add('revealed');
         }
         else if(revIdx === cellCount - 1 && timerOn) {
@@ -2302,9 +2307,25 @@ if (startBtn) {
     });
 }
 
+// 단어가 칸을 넘치면(긴 단어가 두 줄이 되어 위아래가 잘리거나, 한 단어가 칸 폭보다 길 때)
+// 칸에 들어갈 때까지 글자 크기를 조금씩 줄인다. 넘치지 않는 단어는 원래 크기 그대로 둔다
+function fitCellWord(cell) {
+    const word = cell.querySelector('.word');
+    if (!word || !cell.clientHeight) return;
+    word.style.fontSize = '';
+    const maxH = cell.clientHeight - 12; // .cell 위아래 padding 6px 씩
+    let size = parseFloat(getComputedStyle(word).fontSize);
+    while (size > 14 && (word.scrollWidth > word.clientWidth + 1 || word.offsetHeight > maxH)) {
+        size *= 0.92;
+        word.style.fontSize = size + 'px';
+    }
+}
+
 function resizeGame() {
     // 공통 상단바가 [상단바 + 게임 카드]를 창 가운데 여백을 두고 맞춘다 (게임판 1400x820)
     TopNav.fit(document.querySelector('.game-container'), 1400, 820);
+    // 글자 크기가 창 폭(vw)을 따라 바뀌므로, 이미 공개된 단어는 다시 맞춘다
+    document.querySelectorAll('#colorGrid .cell.revealed').forEach(fitCellWord);
 }
 window.addEventListener('resize', resizeGame);
 window.addEventListener('load', resizeGame);
