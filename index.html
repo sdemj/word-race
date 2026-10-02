@@ -1651,7 +1651,7 @@ function initCategoryMenu() {
       total += CATEGORY_DATA[cat][sub].length;
     });
     
-    const engName = categoryEnglishMap[cat] ? ` (${categoryEnglishMap[cat]})` : '';
+    const engName = categoryEnglishMap[cat] || '';
     
     const btn = document.createElement("button");
     btn.className = "menu-box-btn";
